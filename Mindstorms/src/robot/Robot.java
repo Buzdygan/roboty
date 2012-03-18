@@ -13,8 +13,14 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class Robot {
 
-	static final float wheelRadius = 2;
-	static final float diameter = 15;
+	/*
+	 * All lengths are expressed in millimeters.
+	 * Wheel diameter value is usually printed on the tire; 
+	 * Use DiameterHelper to get diameter / wheelRadius value;
+	 */
+	
+	static final double wheelRadius = 21.6;
+	static final double diameter = wheelRadius * 6.175; 
 	
 	private IRSeekerV2 seeker;
 	private CompassMindSensor compass;
