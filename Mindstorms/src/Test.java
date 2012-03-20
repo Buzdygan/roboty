@@ -1,18 +1,26 @@
-import position.PositionManager;
+import robot.Robot;
 import lejos.nxt.Button;
+import lejos.nxt.ButtonListener;
 import lejos.nxt.LCD;
 
 
 public class Test {
 	public static void main(String[] args) {
-//		PositionManager pm = new PositionManager();
-//		pm.wheelRadius = 2;
-//		pm.diameter = 20;
-//		
-//		pm.updatePositionUsingAngle(0, 900);
-//		
-//		LCD.drawString(pm.getCurrentPosition().getCoordinates().toString(), 0, 0);
-//		LCD.drawString(pm.getCurrentPosition().getRotation().toString(), 0, 1);
-//		Button.waitForAnyPress();
+		Robot robot = new Robot();
+		
+		Button.ESCAPE.addButtonListener(new ButtonListener() {
+			
+			@Override
+			public void buttonReleased(Button b) {
+				System.exit(0);
+			}
+			
+			@Override
+			public void buttonPressed(Button b) {
+				LCD.clear();
+				LCD.drawString("Button pressed", 0, 0);
+			}
+		});
+		robot.run();
 	}
 }
