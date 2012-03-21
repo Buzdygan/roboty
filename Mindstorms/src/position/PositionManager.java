@@ -4,6 +4,8 @@ import lejos.nxt.NXTRegulatedMotor;
 
 public class PositionManager {
 
+	static final double eps = 0.0001;
+	
 	private Position currentPosition;
 	private NXTRegulatedMotor left, right;
 
@@ -35,6 +37,10 @@ public class PositionManager {
 		this.currentPosition = currentPosition;
 	}
 
+	public void updatePosition(Position movement) {
+		currentPosition = currentPosition.compose(movement);
+	}
+	
 	public void updatePosition() {
 		int tmpLeft = left.getTachoCount();
 		int tmpRight = right.getTachoCount();
@@ -54,8 +60,14 @@ public class PositionManager {
 	private void updatePositionUsingDistance(double leftDistance,
 			double rightDistance) {
 		double alpha = (leftDistance - rightDistance) / diameter;
-		double distance = (leftDistance + rightDistance) / (2 * alpha)
-				* Math.sin(alpha) / Math.cos(alpha / 2);
+		double distance;
+		if (Math.abs(alpha) < eps) {
+			distance = (leftDistance + rightDistance) / 2;
+		} else if (Math.abs(Math.cos(alpha / 2)) < eps) { 
+			distance = (leftDistance + rightDistance) / alpha;
+		} else {
+			distance = (leftDistance + rightDistance) / (2 * alpha)	* Math.sin(alpha) / Math.cos(alpha / 2);
+		}
 		currentPosition.update(alpha, distance);
 	}
 

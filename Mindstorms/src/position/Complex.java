@@ -87,21 +87,25 @@ public class Complex {
     public Complex getConjugate() {
       return new Complex(this.re, this.im * (-1));
     }
-  
+    
+    private double r(double im2) {
+    	return ((double)Math.round(im2*100))/100;
+    }
+    
     public String toString() {
       if (this.re == 0) {
         if (this.im == 0) {
           return "0";
         } else {
-          return (this.im + "i");
+          return (r(this.im) + "i");
         }
       } else {
         if (this.im == 0) {
-          return String.valueOf(this.re);
+          return String.valueOf(r(this.re));
         } else if (this.im < 0) {
-          return(this.re + " " + this.im + "i");
+          return(r(this.re) + " " + r(this.im) + "i");
         } else {
-          return(this.re + " +" + this.im + "i");
+          return(r(this.re) + " +" + r(this.im) + "i");
         }
       }
     }

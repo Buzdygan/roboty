@@ -2,9 +2,6 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
-import lejos.robotics.navigation.DifferentialPilot;
-import lejos.util.Delay;
-import robot.Robot;
 
 public class HelloWorld {
 	public static void main(String[] args) {
@@ -17,9 +14,8 @@ public class HelloWorld {
 //		pilot.stop();
 		Sound.playTone(440, 50);
 		
-		Robot robot = new Robot();
-		DifferentialPilot pilot = robot.getPilot();
-		int direction = 5;
+//		Robot robot = new Robot();
+//		int direction = 5;
 		
 		Motor.B.suspendRegulation();
 		

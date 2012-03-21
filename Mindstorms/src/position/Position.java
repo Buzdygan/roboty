@@ -1,6 +1,5 @@
 package position;
 
-
 public class Position {
 
 	private Complex coordinates;
@@ -31,10 +30,17 @@ public class Position {
 	}
 
 	public void update(double alpha, double distance) {
-		coordinates = coordinates.add(rotation.mul(Complex.fromPolar(distance, Math.PI / 2 + alpha / 2)));
+		coordinates = coordinates.add(rotation.mul(Complex.fromPolar(distance, alpha / 2)));
 		
 		rotation = rotation.mul(Complex.fromPolar(1, alpha));
 		rotation = rotation.div(rotation.getNorm());
+	}
+
+	public Position compose(Position sndMovement) {
+		Complex resCoord = coordinates.add(sndMovement.getCoordinates().mul(rotation));
+		Complex resRot = rotation.mul(sndMovement.getRotation());
+		resRot = resRot.div(resRot.getNorm());
+		return new Position(resCoord, resRot);
 	}
 	
 }
