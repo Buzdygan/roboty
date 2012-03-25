@@ -40,7 +40,8 @@ public class PositionManager {
 	public void updatePosition(Position movement) {
 		currentPosition = currentPosition.compose(movement);
 	}
-	
+
+	// deprecated
 	public void updatePosition() {
 		int tmpLeft = left.getTachoCount();
 		int tmpRight = right.getTachoCount();
@@ -50,6 +51,7 @@ public class PositionManager {
 		rightTachoCount = tmpRight;
 	}
 
+	// deprecated
 	private void updatePositionUsingAngle(int leftAngleDifference,
 			int rightAngleDifference) {
 		double m = wheelRadius * Math.PI / 180;
@@ -57,6 +59,7 @@ public class PositionManager {
 				rightAngleDifference * m);
 	}
 
+	// deprecated
 	private void updatePositionUsingDistance(double leftDistance,
 			double rightDistance) {
 		double alpha = (leftDistance - rightDistance) / diameter;

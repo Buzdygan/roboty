@@ -36,13 +36,12 @@ public class Robot {
 	private NXTRegulatedMotor kicker;
 	private SimplePilot pilot;
 	
-	private PositionManager positionManager1, positionManager2;
+	private PositionManager positionManager;
 	private List<RobotAction> actionList;
 
 	public Robot() {
 		initSensors();
-		positionManager1 = new PositionManager(Motor.C, Motor.B, wheelRadius, diameter);
-		positionManager2 = new PositionManager(Motor.C, Motor.B, wheelRadius, diameter);
+		positionManager = new PositionManager(Motor.C, Motor.B, wheelRadius, diameter);
 		actionList = new ArrayList<RobotAction>();
 	}
 	
@@ -101,7 +100,7 @@ public class Robot {
 	}
 
 	public PositionManager getPositionManager() {
-		return positionManager1;
+		return positionManager;
 	}
 
 	public List<RobotAction> getActionList() {
@@ -135,17 +134,12 @@ public class Robot {
 
 		endTime = System.currentTimeMillis();
 		while (runNextAction()) {
-			positionManager1.updatePosition(pilot.getPreviousMovement(timeDiff));
-			positionManager2.updatePosition();
+			positionManager.updatePosition(pilot.getPreviousMovement(timeDiff));;
 			
-
-			LCD.clear();
-			LCD.drawString( positionManager1.getCurrentPosition().getCoordinates().toString(), 0, 0);
-			LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
+			// LCD.clear();
+			// LCD.drawString( positionManager1.getCurrentPosition().getCoordinates().toString(), 0, 0);
+			// LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
 			
-			LCD.drawString( positionManager2.getCurrentPosition().getCoordinates().toString(), 0, 3);
-			LCD.drawString( positionManager2.getCurrentPosition().getRotation().toString(), 0, 4);
-		
 			timeDiff = System.currentTimeMillis() - endTime;
 			if (timeDiff < actionTime) {
 				Delay.msDelay(actionTime - timeDiff);
@@ -155,14 +149,11 @@ public class Robot {
 			timeDiff = System.currentTimeMillis() - endTime;
 			endTime += timeDiff;
 		}
-		positionManager1.updatePosition(pilot.getPreviousMovement(timeDiff));
-		positionManager2.updatePosition();
+		positionManager.updatePosition(pilot.getPreviousMovement(timeDiff));
 
-		LCD.drawString( positionManager1.getCurrentPosition().getCoordinates().toString(), 0, 0);
-		LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
-		
-		LCD.drawString( positionManager2.getCurrentPosition().getCoordinates().toString(), 0, 3);
-		LCD.drawString( positionManager2.getCurrentPosition().getRotation().toString(), 0, 4);
+		// LCD.clear();
+		// LCD.drawString( positionManager1.getCurrentPosition().getCoordinates().toString(), 0, 0);
+		// LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
 
 	}
 }

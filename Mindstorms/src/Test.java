@@ -45,7 +45,7 @@ public class Test {
 		robot.addAction(new ActionMove(1, -1));
 		robot.addAction(new ActionMove(1, -1));
 		robot.addAction(new ActionMove(0, 0));
-*/ /*
+*/ 
 		robot.addAction(new ActionMove(0, 0));
 		robot.addAction(new ActionMove(1, 1));
 		robot.addAction(new ActionMove(2, 2));
@@ -79,7 +79,8 @@ public class Test {
 		robot.addAction(new ActionMove(-1, 3));
 		robot.addAction(new ActionMove(-2, 2));
 		robot.addAction(new ActionMove(-1, 1));
-*/
+		robot.addAction(new ActionMove(0, 0));
+/*
 		robot.addAction(new ActionMove(0, 0));
 		robot.addAction(new ActionMove(1, 1));
 		robot.addAction(new ActionMove(2, 2));
