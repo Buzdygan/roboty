@@ -1,11 +1,16 @@
 package behaviours;
 
 import lejos.robotics.subsumption.*;
-import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 
 public class Wait implements Behavior{
 	private boolean suppressed = false;
+	DifferentialPilot pilot;
+	
+	public Wait(DifferentialPilot pil)
+	{
+		pilot = pil;
+	}
 	
 	public boolean takeControl(){
 		return true;
@@ -17,7 +22,6 @@ public class Wait implements Behavior{
 	
 	public void action(){
 		suppressed = false;
-		DifferentialPilot pilot = new DifferentialPilot(40, 15, Motor.A, Motor.B);
 		pilot.stop();
 		while(!suppressed)
 			Thread.yield();

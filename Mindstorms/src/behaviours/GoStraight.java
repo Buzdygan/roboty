@@ -1,15 +1,22 @@
 package behaviours;
 
 import robot.Robot;
-import lejos.nxt.*;
+import lejos.nxt.LCD;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.*;
 
 public class GoStraight implements Behavior{
 	private boolean suppressed = false;
+	DifferentialPilot pilot;
+	Robot robot;
+	
+	public GoStraight(DifferentialPilot pil, Robot rob)
+	{
+		pilot = pil;
+		robot = rob;
+	}
 	
 	public boolean takeControl(){
-		Robot robot = new Robot();
 		int direction = robot.getSeeker().getDirection();
 		return direction == 5;
 	}
@@ -19,8 +26,8 @@ public class GoStraight implements Behavior{
 	}
 	
 	public void action(){
+		LCD.drawString("go straight", 0, 0);
 		suppressed = false;
-		DifferentialPilot pilot = new DifferentialPilot(40, 15, Motor.A, Motor.B);
 		pilot.setRotateSpeed(pilot.getRotateMaxSpeed() / 15);
 		pilot.forward();
 		while(!suppressed)
