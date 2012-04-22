@@ -1,49 +1,46 @@
 import lejos.nxt.Button;
-import robot.Robot;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
-import lejos.robotics.navigation.*;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
+import robot.Robot;
+import position.DistanceAnalyser;
 
-public class HelloWorld {
+
+public class DistanceTest {
 	public static void main(String[] args) {
-//		Delay.msDelay(1000);
 		DifferentialPilot pilot = new DifferentialPilot(40, 15, Motor.A, Motor.B);
-//		pilot.setTravelSpeed(100000000);
-		pilot.setAcceleration(400);
-//		pilot.forward();
-//		Delay.msDelay(500);
-//		pilot.stop();
+		DistanceAnalyser analyser = new DistanceAnalyser();
+		pilot.setAcceleration(300);
 		Sound.playTone(440, 50);
 		
 		Robot robot = new Robot();
-		int direction = 5;
+		robot.getDistance().continuous();
 		
-		/*
-		int val = Motor.B.getTachoCount();
-		LCD.drawInt(val, 0, 0);
-		Motor.B.rotate(-60);
-		val = Motor.B.getTachoCount();
-		LCD.drawInt(val, 0, 1);
-		Motor.B.stop();
-		LCD.drawInt(val, 0, 2);
-		Button.readButtons();
-		while (Button.readButtons() == 0) {
-			Motor.B.suspendRegulation();
-			LCD.drawInt(Motor.B.getTachoCount(), 0, 3);
-			LCD.drawInt(Motor.B.getPosition(), 0, 4);
-		}
-		*/
 		
 		while (Button.readButtons() == 0) {
-			Delay.msDelay(30);
-			direction = robot.getSeeker().getDirection();
-			int[] values = robot.getSeeker().getSensorValues();
+			Delay.msDelay(300);
+			int distance = robot.getDistance().getDistance();
+			/*if(analyser.addMeasurement(distance))
+				robot.kick();*/
 			LCD.clear();
-			for(int i=0; i<5; ++i) {
-				LCD.drawInt(values[i], 0, i);
+			LCD.drawInt(distance, 0, 1);
+			LCD.drawInt(analyser.last, 0, 2);
+			LCD.drawInt(analyser.lastDiff,0, 3);
+			
+			
+			if (distance < 40){
+				pilot.setRotateSpeed(pilot.getRotateMaxSpeed() / 3);
+				pilot.rotateLeft();
+			} else {
+				pilot.forward();
 			}
+			
+			
+			
+			
+			/*
 			if (direction == 0) {
 				pilot.stop();
 				Sound.playTone(3000, 10);
@@ -77,6 +74,7 @@ public class HelloWorld {
 				pilot.setRotateSpeed(pilot.getRotateMaxSpeed() / 15);
 				pilot.forward();
 			}
+			*/
 		}
 		
 	}
