@@ -1,9 +1,15 @@
 package position;
 
+import java.lang.Math.*;
+
 public class DistanceAnalyser {
 	
 	public int last;
 	public int lastDiff;
+	
+	public static int NORMAL = 0;
+	public static int OBJECT_IN_WAY = 1;
+	public static int STUCK = 2; 
 	
 	public DistanceAnalyser()
 	{
@@ -11,13 +17,18 @@ public class DistanceAnalyser {
 		lastDiff = 0;
 	}
 	
-	public boolean addMeasurement(int dist){
-		/* returns true if thinks that object has appeared */
+	public int addMeasurement(int dist){
+		if (dist == 255)
+			return NORMAL;
+		int decision = NORMAL;
 		int newDiff = dist - last;
 		last = dist;
 		if(newDiff < 0 && dist < 30 && lastDiff - newDiff > 10)
-			return true;
-		else return false;
+			decision = OBJECT_IN_WAY;
+		if(Math.abs(newDiff) < 3 && Math.abs(lastDiff) < 3)
+			decision = STUCK;
+		lastDiff = newDiff;
+		return decision;
 	}
 	
 

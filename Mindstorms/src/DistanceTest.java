@@ -10,9 +10,9 @@ import position.DistanceAnalyser;
 
 public class DistanceTest {
 	public static void main(String[] args) {
-		DifferentialPilot pilot = new DifferentialPilot(40, 15, Motor.A, Motor.B);
+		DifferentialPilot pilot = new DifferentialPilot(40, 15, Motor.B, Motor.C);
 		DistanceAnalyser analyser = new DistanceAnalyser();
-		pilot.setAcceleration(300);
+		pilot.setAcceleration(400);
 		Sound.playTone(440, 50);
 		
 		Robot robot = new Robot();
@@ -20,20 +20,25 @@ public class DistanceTest {
 		
 		
 		while (Button.readButtons() == 0) {
-			Delay.msDelay(300);
+			Delay.msDelay(200);
 			int distance = robot.getDistance().getDistance();
-			/*if(analyser.addMeasurement(distance))
-				robot.kick();*/
+			int decision = analyser.addMeasurement(distance);
 			LCD.clear();
 			LCD.drawInt(distance, 0, 1);
 			LCD.drawInt(analyser.last, 0, 2);
 			LCD.drawInt(analyser.lastDiff,0, 3);
+			LCD.drawInt(decision, 0, 4);
 			
-			
-			if (distance < 40){
+			if (decision == DistanceAnalyser.OBJECT_IN_WAY)
+				robot.kick();
+			if (decision == DistanceAnalyser.STUCK){
+				pilot.backward();
+				Delay.msDelay(600);
 				pilot.setRotateSpeed(pilot.getRotateMaxSpeed() / 3);
 				pilot.rotateLeft();
-			} else {
+				Delay.msDelay(800);
+			}
+			if (decision == DistanceAnalyser.NORMAL){
 				pilot.forward();
 			}
 			
