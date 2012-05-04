@@ -1,19 +1,13 @@
 package behaviours;
 
-import lejos.robotics.subsumption.*;
-import lejos.nxt.Motor;
-import lejos.robotics.navigation.DifferentialPilot;
 import robot.Robot;
 
-public class TurnLeft implements Behavior{
+public class TurnLeft extends RobotBehavior {
+
 	private boolean suppressed = false;
-	DifferentialPilot pilot;
-	Robot robot;
 	
-	public TurnLeft(DifferentialPilot pil, Robot rob)
-	{
-		pilot = pil;
-		robot = rob;
+	public TurnLeft(Robot robot) {
+		super(robot);
 	}
 	
 	public boolean takeControl(){
@@ -28,11 +22,11 @@ public class TurnLeft implements Behavior{
 	
 	public void action(){
 		suppressed = false;
-		pilot.setRotateSpeed(pilot.getRotateMaxSpeed() / 15);
-		pilot.rotateLeft();
+		getRobot().getDifferentialPilot().setRotateSpeed(getRobot().getDifferentialPilot().getRotateMaxSpeed() / 15);
+		getRobot().getDifferentialPilot().rotateLeft();
 		
 		while(!suppressed)
 			Thread.yield();
-		pilot.stop();
+		getRobot().getDifferentialPilot().stop();
 	}
 }

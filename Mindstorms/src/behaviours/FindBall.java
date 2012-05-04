@@ -1,7 +1,6 @@
 package behaviours;
 
 import robot.Robot;
-import lejos.robotics.subsumption.Behavior;
 
 public class FindBall extends RobotBehavior {
 
@@ -20,6 +19,7 @@ public class FindBall extends RobotBehavior {
 			haveBall = !haveBall;
 			wrongSamples = 0;
 		}
+		return haveBall;
 	}
 	
 	public FindBall(Robot robot) {
@@ -28,8 +28,7 @@ public class FindBall extends RobotBehavior {
 
 	@Override
 	public boolean takeControl() {
-		sample();
-		return !haveBall;
+		return !sample();
 	}
 
 	@Override

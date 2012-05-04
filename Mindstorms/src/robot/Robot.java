@@ -163,4 +163,9 @@ public class Robot {
 		// LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
 
 	}
+
+	public boolean checkBall() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
