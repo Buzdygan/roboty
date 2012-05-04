@@ -1,17 +1,15 @@
 package behaviours;
 
-import lejos.robotics.subsumption.*;
-import lejos.robotics.navigation.DifferentialPilot;
+import robot.Robot;
 
-public class Wait implements Behavior{
-	private boolean suppressed = false;
-	DifferentialPilot pilot;
+public class Wait extends RobotBehavior {
 	
-	public Wait(DifferentialPilot pil)
-	{
-		pilot = pil;
+	public Wait(Robot robot) {
+		super(robot);
 	}
-	
+
+	private boolean suppressed = false;
+
 	public boolean takeControl(){
 		return true;
 	}
@@ -22,7 +20,7 @@ public class Wait implements Behavior{
 	
 	public void action(){
 		suppressed = false;
-		pilot.stop();
+		getRobot().getDifferentialPilot().stop();
 		while(!suppressed)
 			Thread.yield();
 	}
