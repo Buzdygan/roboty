@@ -2,9 +2,9 @@ package behaviours;
 
 import robot.Robot;
 
-public class FindBall extends RobotBehavior {
+public class UpdatePosition extends RobotBehavior {
 
-	public FindBall(Robot robot) {
+	public UpdatePosition(Robot robot) {
 		super(robot);
 	}
 

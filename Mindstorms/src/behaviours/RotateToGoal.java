@@ -1,11 +1,12 @@
 package behaviours;
 
+import position.CurrentPositionBox;
 import robot.Robot;
 
-public class FindBall extends RobotBehavior {
+public class RotateToGoal extends RobotPositionBehavior {
 
-	public FindBall(Robot robot) {
-		super(robot);
+	public RotateToGoal(Robot robot, CurrentPositionBox currentPositionBox) {
+		super(robot, currentPositionBox);
 	}
 
 	@Override

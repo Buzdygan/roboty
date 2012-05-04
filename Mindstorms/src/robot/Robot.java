@@ -14,6 +14,7 @@ import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
+import position.CurrentPositionBox;
 import position.PositionManager;
 
 public class Robot {
@@ -26,8 +27,6 @@ public class Robot {
 	
 	static final double wheelRadius = 21.6;
 	static final double diameter = wheelRadius * 6.175;
-	
-	static final long actionTime = 200; // in miliseconds
 	
 	private IRSeekerV2 seeker;
 	private CompassMindSensor compass;
@@ -42,14 +41,15 @@ public class Robot {
 	private List<RobotAction> actionList;
 
 	public Robot() {
-		initSensors();
+		initializeSensors();
 		positionManager = new PositionManager(Motor.C, Motor.B, wheelRadius, diameter);
 		actionList = new ArrayList<RobotAction>();
 	}
 	
-	private void initSensors() {
+	private void initializeSensors() {
 		seeker = new IRSeekerV2(SensorPort.S1, Mode.AC);
 		compass = new CompassMindSensor(SensorPort.S2);
+		compass.resetCartesianZero();
 		colorlight = new ColorSensor(SensorPort.S4);
 		distance = new UltrasonicSensor(SensorPort.S3);
 		
@@ -126,16 +126,7 @@ public class Robot {
 		getKicker().rotate(-90);
 		getKicker().rotate(90);
 	}
-	
-	public boolean runNextAction() {
-		if (actionList.isEmpty()) {
-			return false;
-		}
-		actionList.get(0).runAction(this);
-		actionList.remove(0);
-		return true;
-	}
-	
+/*	
 	public void run() {
 		long endTime, timeDiff = 0;
 
@@ -163,9 +154,10 @@ public class Robot {
 		// LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
 
 	}
+*/
 
-	public boolean checkBall() {
+	public void initialize(CurrentPositionBox positionBox) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 }
