@@ -3,12 +3,12 @@ import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import position.CurrentPositionBox;
 import robot.Robot;
-import behaviours.Exit;
-import behaviours.FindBall;
-import behaviours.Kick;
-import behaviours.MoveToOurHalf;
-import behaviours.RotateToGoal;
-import behaviours.RotateToOurHalf;
+import behaviors.Exit;
+import behaviors.FindBall;
+import behaviors.Kick;
+import behaviors.MoveToOurHalf;
+import behaviors.RotateToGoal;
+import behaviors.RotateToOurHalf;
 
 
 public class CompetitionType2 {

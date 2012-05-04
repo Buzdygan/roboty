@@ -1,4 +1,4 @@
-package behaviours;
+package behaviors;
 
 import lejos.robotics.subsumption.Behavior;
 import robot.Robot;

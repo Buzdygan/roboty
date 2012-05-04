@@ -1,11 +1,12 @@
-package behaviours;
+package behaviors;
 
+import position.CurrentPositionBox;
 import robot.Robot;
 
-public class UpdatePosition extends RobotBehavior {
+public class MoveToOurHalf extends RobotPositionBehavior {
 
-	public UpdatePosition(Robot robot) {
-		super(robot);
+	public MoveToOurHalf(Robot robot, CurrentPositionBox currentPositionBox) {
+		super(robot, currentPositionBox);
 	}
 
 	@Override

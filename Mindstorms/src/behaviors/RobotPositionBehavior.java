@@ -1,4 +1,4 @@
-package behaviours;
+package behaviors;
 
 import position.CurrentPositionBox;
 import position.Position;

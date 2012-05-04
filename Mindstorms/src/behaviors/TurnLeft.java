@@ -1,4 +1,4 @@
-package behaviours;
+package behaviors;
 
 import robot.Robot;
 

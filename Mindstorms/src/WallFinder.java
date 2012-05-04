@@ -1,9 +1,9 @@
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import robot.Robot;
-import behaviours.EndGame;
-import behaviours.MoveForward;
-import behaviours.StepBack;
+import behaviors.EndGame;
+import behaviors.MoveForward;
+import behaviors.StepBack;
 public class WallFinder {
 	public static void main(String[] args){
 		Robot robot = new Robot();

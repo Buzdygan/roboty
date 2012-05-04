@@ -2,7 +2,7 @@ import lejos.nxt.Motor;
 import robot.Robot;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.*;
-import behaviours.*;
+import behaviors.*;
 public class BallFinder {
 	public static void main(String[] args){
 		DifferentialPilot pilot = new DifferentialPilot(40, 15, Motor.A, Motor.B);

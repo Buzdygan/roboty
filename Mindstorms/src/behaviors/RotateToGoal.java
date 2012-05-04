@@ -1,11 +1,11 @@
-package behaviours;
+package behaviors;
 
 import position.CurrentPositionBox;
 import robot.Robot;
 
-public class RotateToOurHalf extends RobotPositionBehavior {
+public class RotateToGoal extends RobotPositionBehavior {
 
-	public RotateToOurHalf(Robot robot, CurrentPositionBox currentPositionBox) {
+	public RotateToGoal(Robot robot, CurrentPositionBox currentPositionBox) {
 		super(robot, currentPositionBox);
 	}
 

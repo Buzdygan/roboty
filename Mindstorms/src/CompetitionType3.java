@@ -3,10 +3,10 @@ import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import position.CurrentPositionBox;
 import robot.Robot;
-import behaviours.Exit;
-import behaviours.FindBall;
-import behaviours.Kick;
-import behaviours.RotateToGoal;
+import behaviors.Exit;
+import behaviors.FindBall;
+import behaviors.Kick;
+import behaviors.RotateToGoal;
 
 
 public class CompetitionType3 {
