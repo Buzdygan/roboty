@@ -1,10 +1,11 @@
 import lejos.nxt.Button;
-import robot.Robot;
+import lejos.nxt.ColorSensor.Color;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
-import lejos.robotics.navigation.*;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
+import robot.Robot;
 
 public class HelloWorld {
 	public static void main(String[] args) {
@@ -18,7 +19,7 @@ public class HelloWorld {
 		Sound.playTone(440, 50);
 		
 		Robot robot = new Robot();
-		int direction = 5;
+		//int direction = 5;
 		
 		/*
 		int val = Motor.B.getTachoCount();
@@ -38,9 +39,14 @@ public class HelloWorld {
 		
 		while (Button.readButtons() == 0) {
 			Delay.msDelay(30);
-			direction = robot.getSeeker().getDirection();
-			int[] values = robot.getSeeker().getSensorValues();
+			//int direction = robot.getSeeker().getDirection();
+			//int[] values = robot.getSeeker().getSensorValues();
+			Color color = robot.getColorlight().getColor();
 			LCD.clear();
+			LCD.drawInt(color.getRed(), 0, 0);
+			LCD.drawInt(color.getGreen(), 0, 1);
+			LCD.drawInt(color.getBlue(), 0, 2);
+			/*
 			for(int i=0; i<5; ++i) {
 				LCD.drawInt(values[i], 0, i);
 			}
@@ -77,6 +83,7 @@ public class HelloWorld {
 				pilot.setRotateSpeed(pilot.getRotateMaxSpeed() / 15);
 				pilot.forward();
 			}
+			*/
 		}
 		
 	}

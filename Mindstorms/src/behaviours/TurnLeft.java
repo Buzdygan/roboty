@@ -13,6 +13,8 @@ public class TurnLeft extends RobotBehavior {
 	public boolean takeControl(){
 		Robot robot = new Robot();
 		int direction = robot.getSeeker().getDirection();
+		if(direction == 0)
+			return false;
 		return direction < 5;
 	}
 	
