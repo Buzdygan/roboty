@@ -12,7 +12,7 @@ public class StepBack extends RobotBehavior {
 	private boolean suppressed = false;
 
 	public boolean takeControl(){
-		int distance = getRobot().getDistance().getDistance();
+		int distance = getRobot().getUltrasonic().getDistance();
 		LCD.clear(0);
 		LCD.drawInt(distance, 0, 0);
 		return (distance < 50);

@@ -16,12 +16,12 @@ public class DistanceTest {
 		Sound.playTone(440, 50);
 		
 		Robot robot = new Robot();
-		robot.getDistance().continuous();
+		robot.getUltrasonic().continuous();
 		
 		
 		while (Button.readButtons() == 0) {
 			Delay.msDelay(200);
-			int distance = robot.getDistance().getDistance();
+			int distance = robot.getUltrasonic().getDistance();
 			int decision = analyser.addMeasurement(distance);
 			LCD.clear();
 			LCD.drawInt(distance, 0, 1);

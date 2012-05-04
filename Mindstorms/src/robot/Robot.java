@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lejos.nxt.ColorSensor;
-import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -13,7 +12,6 @@ import lejos.nxt.addon.CompassMindSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.util.Delay;
 import position.CurrentPositionBox;
 import position.PositionManager;
 
@@ -31,7 +29,7 @@ public class Robot {
 	private IRSeekerV2 seeker;
 	private CompassMindSensor compass;
 	private ColorSensor colorlight;
-	private UltrasonicSensor distance;
+	private UltrasonicSensor ultrasonic;
 	
 	private NXTRegulatedMotor kicker;
 	private DifferentialPilot diffPilot;
@@ -51,7 +49,7 @@ public class Robot {
 		compass = new CompassMindSensor(SensorPort.S2);
 		compass.resetCartesianZero();
 		colorlight = new ColorSensor(SensorPort.S4);
-		distance = new UltrasonicSensor(SensorPort.S3);
+		ultrasonic = new UltrasonicSensor(SensorPort.S3);
 		
 		kicker = Motor.A;
 		pilot = new SimplePilot(Motor.C, Motor.B, wheelRadius, diameter);
@@ -82,12 +80,12 @@ public class Robot {
 		this.colorlight = colorlight;
 	}
 
-	public UltrasonicSensor getDistance() {
-		return distance;
+	public UltrasonicSensor getUltrasonic() {
+		return ultrasonic;
 	}
 
-	public void setDistance(UltrasonicSensor distance) {
-		this.distance = distance;
+	public void setUltrasonic(UltrasonicSensor ultrasonic) {
+		this.ultrasonic = ultrasonic;
 	}
 
 	public NXTRegulatedMotor getKicker() {
