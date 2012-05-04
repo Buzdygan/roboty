@@ -12,6 +12,7 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.addon.CompassMindSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import position.PositionManager;
 
@@ -34,6 +35,7 @@ public class Robot {
 	private UltrasonicSensor distance;
 	
 	private NXTRegulatedMotor kicker;
+	private DifferentialPilot diffPilot;
 	private SimplePilot pilot;
 	
 	private PositionManager positionManager;
@@ -53,6 +55,7 @@ public class Robot {
 		
 		kicker = Motor.A;
 		pilot = new SimplePilot(Motor.C, Motor.B, wheelRadius, diameter);
+		diffPilot = new DifferentialPilot(wheelRadius * 2, diameter, Motor.C, Motor.B);
 	}
 
 	public IRSeekerV2 getSeeker() {
@@ -95,6 +98,10 @@ public class Robot {
 		this.kicker = kicker;
 	}
 	
+	public DifferentialPilot getDifferentialPilot() {
+		return diffPilot;
+	}
+
 	public SimplePilot getPilot() {
 		return pilot;
 	}
