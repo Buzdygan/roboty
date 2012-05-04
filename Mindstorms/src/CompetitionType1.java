@@ -5,10 +5,10 @@ import position.CurrentPositionBox;
 import robot.Robot;
 import behaviours.Exit;
 import behaviours.FindBall;
+import behaviours.Kick;
 import behaviours.MoveToOurHalf;
 import behaviours.RotateToGoal;
 import behaviours.RotateToOurHalf;
-import behaviours.Shoot;
 
 
 public class CompetitionType1 {
@@ -19,7 +19,7 @@ public class CompetitionType1 {
 		robot.initialize(positionBox);
 		
 		Behavior behaviors[] = new Behavior[6];
-		behaviors[0] = new Shoot(robot);
+		behaviors[0] = new Kick(robot);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
 		behaviors[2] = new MoveToOurHalf(robot, positionBox);
 		behaviors[3] = new RotateToOurHalf(robot, positionBox);
