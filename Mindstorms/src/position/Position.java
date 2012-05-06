@@ -7,6 +7,10 @@ public class Position {
 
 	public Position(Complex coordinates, Complex rotation) {
 		super();
+		set(coordinates, rotation);
+	}
+	
+	public void set(Complex coordinates, Complex rotation) {
 		this.coordinates = coordinates;
 		this.rotation = rotation;
 	}
@@ -31,7 +35,6 @@ public class Position {
 
 	public void update(double alpha, double distance) {
 		coordinates = coordinates.add(rotation.mul(Complex.fromPolar(distance, alpha / 2)));
-		
 		rotation = rotation.mul(Complex.fromPolar(1, alpha));
 		rotation = rotation.div(rotation.getNorm());
 	}
@@ -40,7 +43,8 @@ public class Position {
 		Complex resCoord = coordinates.add(sndMovement.getCoordinates().mul(rotation));
 		Complex resRot = rotation.mul(sndMovement.getRotation());
 		resRot = resRot.div(resRot.getNorm());
-		return new Position(resCoord, resRot);
+		set(resCoord, resRot);
+		return this;
 	}
 	
 }

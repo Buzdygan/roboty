@@ -12,13 +12,13 @@ public class UpdatePosition extends RobotPositionBehavior {
 
 	@Override
 	public boolean takeControl() {
+		int values[] = getRobot().getSeeker().getSensorValues();
+		for (int i=0; i<values.length; ++i) {
+			LCD.clear(i);
+			LCD.drawInt(values[i], 0, i);
+		}
+		
 		getRobot().getPositionManager().updatePosition();
-		LCD.clear();
-		LCD.drawInt((int)Runtime.getRuntime().freeMemory(), 0, 0);
-		LCD.drawInt((int) Math.round(getCurrentPosition().getCoordinates().getRe()), 0, 1);
-		LCD.drawInt((int) Math.round(getCurrentPosition().getCoordinates().getIm()), 0, 2);
-		LCD.drawInt((int) Math.round(getCurrentPosition().getRotation().getRe()), 0, 3);
-		LCD.drawInt((int) Math.round(getCurrentPosition().getRotation().getIm()), 0, 4);
 		return false;
 	}
 

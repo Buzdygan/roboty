@@ -1,5 +1,6 @@
 package behaviors;
 
+import lejos.nxt.LCD;
 import lejos.util.Delay;
 import robot.Robot;
 
@@ -34,12 +35,17 @@ public class FindBall extends RobotBehavior {
 				lostBallCounter = 0;
 			}
 		}
+		if (!gotBall) {
+			LCD.drawString("A", 0, 7);
+		}
 		return !gotBall;
 	}
 
 	@Override
 	public void action() {
 		suppressed = false;
+		
+		LCD.drawString("a", 0, 6);
 		
 		boolean canCatchIt = false;
 		
@@ -61,22 +67,28 @@ public class FindBall extends RobotBehavior {
 			} else {
 				canCatchIt = false;
 			}
-			
+
+			LCD.drawString("b", 0, 6);
 			getRobot().getDifferentialPilot().steer(TURN_RATE * (5 - direction));
-			Delay.msDelay(10);
+			LCD.drawString("c", 0, 6);
 			
 		} while ((!suppressed) && (!gotBall));
 
+		LCD.drawString("d", 0, 6);
 		if (!suppressed) {
+			LCD.drawString("e", 0, 6);
 			Delay.msDelay(DELAY_LENGTH);
 		}
-		
+
+		LCD.drawString("f", 0, 6);
 		getRobot().getLeft().stop(true);
 		getRobot().getRight().stop(true);
+		LCD.drawString("g", 0, 6);
 	}
 
 	@Override
 	public void suppress() {
+		LCD.drawString("B", 0, 7);
 		suppressed = true;
 	}
 
