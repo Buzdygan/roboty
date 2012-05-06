@@ -31,6 +31,10 @@ public class Robot {
 	static final double wheelRadius = 21.6;
 	static final double diameter = wheelRadius * 6.175;
 	
+	public static double getDiameter() {
+		return diameter;
+	}
+
 	private IRSeekerV2 seeker;
 	private CompassMindSensor compass;
 	private ColorSensor colorlight;
