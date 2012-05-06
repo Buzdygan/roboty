@@ -46,19 +46,50 @@ public class CurrentPositionBox {
 		return Math.abs(diff.getAngle()) < angleTreshold;
 	}
 	
-	public double getRotationTo(double arc, Complex destination) {
+	public boolean almostInFront(Complex destination) {
+		Complex diff = destination.sub(getCurrentPosition().getCoordinates());
+		diff = diff.div(getCurrentPosition().getRotation());
+		return Math.abs(diff.getAngle()) < 3 * angleTreshold;
+	}
+	
+	public int getRotationTo(double arc, Complex destination) {
 		arc /= 100;
 		double radius = diameter * (1 + arc ) / (1 - arc) / 2;
 		double left = minDistance(getCurrentPosition().getCoordinates().add(new Complex(0, radius).mul(getCurrentPosition().getRotation())), radius);
 		double right = minDistance(getCurrentPosition().getCoordinates().add(new Complex(0, radius).mul(getCurrentPosition().getRotation())), radius);
-		return 0;
+		Complex relative = destination.sub(getCurrentPosition().getCoordinates()).div(getCurrentPosition().getRotation());
+		if ((left > 0) && (right > 0)) {
+			return (int)Math.round(Math.signum(relative.getAngle()));
+		}
+		if (left > 0) {
+			return 1;
+		}
+		if (right > 0) {
+			return 1;
+		}
+		return (int)Math.round(Math.signum(left - right));
 	}
-
+	
 	private double minDistance(Complex center, double radius) {
 		return Math.min(center.getRe() - radius, 
 				Math.min(pitchHeight - center.getRe() - radius,
 				Math.min(center.getIm() - radius,
 				pitchWidth - center.getIm() - radius)));
 	}
+
+	public boolean inFrontOfOpponentsGoal() {
+		return inFront(getOpponentsGoalCoord());
+	}
+
+	public boolean almostInFrontOfOpponentsGoal() {
+		return almostInFront(getOpponentsGoalCoord());
+	}
 	
+	public int getRotationToOpponentsGoal(double arc) {
+		return getRotationTo(arc, opponentsGoalCoord);
+	}
+	
+	public int getRotationToOurHalf(double arc) {
+		return getRotationTo(arc, ourHalfCoord);
+	}
 }

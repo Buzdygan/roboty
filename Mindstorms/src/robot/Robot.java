@@ -13,7 +13,6 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.addon.CompassMindSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
-import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import position.Complex;
 import position.CurrentPositionBox;
@@ -30,6 +29,7 @@ public class Robot {
 	
 	static final double wheelRadius = 21.6;
 	static final double diameter = wheelRadius * 6.175;
+	static final int MAX_DISTANCE = 255;
 	
 	public static double getDiameter() {
 		return diameter;
@@ -41,7 +41,7 @@ public class Robot {
 	private UltrasonicSensor ultrasonic;
 	
 	private NXTRegulatedMotor left, right, kicker;
-	private DifferentialPilot diffPilot;
+	private AlmostDifferentialPilot diffPilot;
 	private SimplePilot pilot;
 	
 	private PositionManager positionManager;
@@ -64,7 +64,7 @@ public class Robot {
 		
 		kicker = Motor.A;
 		pilot = new SimplePilot(left, right, wheelRadius, diameter);
-		diffPilot = new DifferentialPilot(wheelRadius * 2, diameter, left, right);
+		diffPilot = new AlmostDifferentialPilot(wheelRadius * 2, diameter, left, right);
 	}
 	
 	private int getMostProbable(List<Integer> elist)
@@ -103,7 +103,7 @@ public class Robot {
 	
 	public Position findPosition(){
 		Position startPosition = new Position();
-		DifferentialPilot pilot = getDifferentialPilot();
+		AlmostDifferentialPilot pilot = getDifferentialPilot();
 		List<Integer> xPositions = new ArrayList<Integer>();
 		List<Integer> yPositions = new ArrayList<Integer>();
 		final int turns = 12;
@@ -197,7 +197,7 @@ public class Robot {
 		this.kicker = kicker;
 	}
 	
-	public DifferentialPilot getDifferentialPilot() {
+	public AlmostDifferentialPilot getDifferentialPilot() {
 		return diffPilot;
 	}
 
@@ -261,4 +261,9 @@ public class Robot {
 		positionManager.setPositionBox(positionBox);
 		positionManager.reset();
 	}
+	
+	public boolean canHaveBall(int distance, int direction) {
+		return (((distance == MAX_DISTANCE) || (distance < 3)) && (direction != 0) && (Math.abs(direction - 5) < 2));
+	}
+	
 }

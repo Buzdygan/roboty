@@ -1,6 +1,5 @@
 package position;
 
-import java.lang.Math.*;
 
 public class DistanceAnalyser {
 	

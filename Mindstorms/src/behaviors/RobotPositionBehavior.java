@@ -13,6 +13,10 @@ public abstract class RobotPositionBehavior extends RobotBehavior {
 		this.currentPositionBox = currentPositionBox;
 	}
 	
+	public CurrentPositionBox getCurrentPositionBox() {
+		return currentPositionBox;
+	}
+	
 	public Position getCurrentPosition() {
 		return currentPositionBox.getCurrentPosition();
 	}
