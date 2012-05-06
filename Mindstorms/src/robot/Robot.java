@@ -11,7 +11,6 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.addon.CompassMindSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
-import lejos.robotics.navigation.DifferentialPilot;
 import position.CurrentPositionBox;
 import position.Position;
 import position.PositionManager;
@@ -26,6 +25,7 @@ public class Robot {
 	
 	static final double wheelRadius = 21.6;
 	static final double diameter = wheelRadius * 6.175;
+	static final int MAX_DISTANCE = 255;
 	
 	public static double getDiameter() {
 		return diameter;
@@ -37,7 +37,7 @@ public class Robot {
 	private UltrasonicSensor ultrasonic;
 	
 	private NXTRegulatedMotor left, right, kicker;
-	private DifferentialPilot diffPilot;
+	private AlmostDifferentialPilot diffPilot;
 	private SimplePilot pilot;
 	
 	private PositionManager positionManager;
@@ -60,7 +60,7 @@ public class Robot {
 		
 		kicker = Motor.A;
 		pilot = new SimplePilot(left, right, wheelRadius, diameter);
-		diffPilot = new DifferentialPilot(wheelRadius * 2, diameter, left, right);
+		diffPilot = new AlmostDifferentialPilot(wheelRadius * 2, diameter, left, right);
 	}
 
 	public NXTRegulatedMotor getLeft() {
@@ -111,7 +111,7 @@ public class Robot {
 		this.kicker = kicker;
 	}
 	
-	public DifferentialPilot getDifferentialPilot() {
+	public AlmostDifferentialPilot getDifferentialPilot() {
 		return diffPilot;
 	}
 
@@ -174,4 +174,9 @@ public class Robot {
 		positionManager.setPositionBox(positionBox);
 		positionManager.reset();
 	}
+	
+	public boolean canHaveBall(int distance, int direction) {
+		return (((distance == MAX_DISTANCE) || (distance < 3)) && (direction != 0) && (Math.abs(direction - 5) < 2));
+	}
+	
 }
