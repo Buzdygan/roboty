@@ -1,6 +1,5 @@
 package behaviors;
 
-import lejos.nxt.LCD;
 import lejos.util.Delay;
 import robot.Robot;
 
@@ -8,7 +7,7 @@ public class FindBall extends RobotBehavior {
 
 	private final int MAX_DISTANCE = 255;
 	private final double TURN_RATE = 50;
-	private final int DELAY_LENGTH = 100; // in milliseconds
+	private final int DELAY_LENGTH = 0; // in milliseconds
 	private final int LOST_BALL_THRESHOLD = 3;
 	
 	private boolean suppressed = false;
@@ -22,7 +21,10 @@ public class FindBall extends RobotBehavior {
 	@Override
 	public boolean takeControl() {
 		if (gotBall) {
-			if (getRobot().getUltrasonic().getDistance() != MAX_DISTANCE) {
+			int distance = getRobot().getUltrasonic().getDistance();
+			int direction = getRobot().getSeeker().getDirection();
+			
+			if ((distance != MAX_DISTANCE) || ((Math.abs(direction - 5) > 1) && (direction != 0))) {
 				++lostBallCounter;
 			} else {
 				lostBallCounter = 0;
@@ -69,8 +71,8 @@ public class FindBall extends RobotBehavior {
 			Delay.msDelay(DELAY_LENGTH);
 		}
 		
-		getRobot().getDifferentialPilot().stop();
-		LCD.clear();
+		getRobot().getLeft().stop(true);
+		getRobot().getRight().stop(true);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import behaviors.Exit;
 import behaviors.FindBall;
 import behaviors.Kick;
 import behaviors.RotateToGoal;
+import behaviors.UpdatePosition;
 
 
 public class CompetitionType3 {
@@ -16,11 +17,12 @@ public class CompetitionType3 {
 		
 		robot.initialize(positionBox);
 		
-		Behavior behaviors[] = new Behavior[6];
+		Behavior behaviors[] = new Behavior[5];
 		behaviors[0] = new Kick(robot);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
-		behaviors[4] = new FindBall(robot);
-		behaviors[5] = new Exit();
+		behaviors[2] = new FindBall(robot);
+		behaviors[3] = new UpdatePosition(robot, positionBox);
+		behaviors[4] = new Exit();
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
 		

@@ -13,6 +13,7 @@ import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
 import lejos.robotics.navigation.DifferentialPilot;
 import position.CurrentPositionBox;
+import position.Position;
 import position.PositionManager;
 
 public class Robot {
@@ -31,7 +32,7 @@ public class Robot {
 	private ColorSensor colorlight;
 	private UltrasonicSensor ultrasonic;
 	
-	private NXTRegulatedMotor kicker;
+	private NXTRegulatedMotor left, right, kicker;
 	private DifferentialPilot diffPilot;
 	private SimplePilot pilot;
 	
@@ -39,8 +40,10 @@ public class Robot {
 	private List<RobotAction> actionList;
 
 	public Robot() {
+		left = Motor.C;
+		right = Motor.B;
 		initializeSensors();
-		positionManager = new PositionManager(Motor.C, Motor.B, wheelRadius, diameter);
+		positionManager = new PositionManager(left, right, wheelRadius, diameter);
 		actionList = new ArrayList<RobotAction>();
 	}
 	
@@ -52,8 +55,16 @@ public class Robot {
 		ultrasonic = new UltrasonicSensor(SensorPort.S3);
 		
 		kicker = Motor.A;
-		pilot = new SimplePilot(Motor.C, Motor.B, wheelRadius, diameter);
-		diffPilot = new DifferentialPilot(wheelRadius * 2, diameter, Motor.C, Motor.B);
+		pilot = new SimplePilot(left, right, wheelRadius, diameter);
+		diffPilot = new DifferentialPilot(wheelRadius * 2, diameter, left, right);
+	}
+
+	public NXTRegulatedMotor getLeft() {
+		return left;
+	}
+
+	public NXTRegulatedMotor getRight() {
+		return right;
 	}
 
 	public IRSeekerV2 getSeeker() {
@@ -155,7 +166,8 @@ public class Robot {
 */
 
 	public void initialize(CurrentPositionBox positionBox) {
-		// TODO Auto-generated method stub
-		
+		positionBox.setCurrentPosition(new Position());
+		positionManager.setPositionBox(positionBox);
+		positionManager.reset();
 	}
 }

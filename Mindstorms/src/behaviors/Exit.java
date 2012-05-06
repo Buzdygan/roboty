@@ -1,6 +1,7 @@
 package behaviors;
 
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
 import lejos.robotics.subsumption.Behavior;
 
 public class Exit implements Behavior {

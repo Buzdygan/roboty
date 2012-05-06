@@ -29,7 +29,6 @@ public class Position {
 		this.rotation = rotation;
 	}
 
-	// deprecated
 	public void update(double alpha, double distance) {
 		coordinates = coordinates.add(rotation.mul(Complex.fromPolar(distance, alpha / 2)));
 		
