@@ -10,9 +10,11 @@ public class HelloWorld {
 		Robot robot = new Robot();
 		
 		while (Button.readButtons() == 0) {
-			LCD.clear(0);
+			LCD.clear();
 			LCD.drawInt(robot.getUltrasonic().getDistance(), 0, 0);
-			Delay.msDelay(50);
+			LCD.drawInt((int)robot.getCompass().getDegrees(), 0, 1);
+			LCD.drawInt((int)robot.getCompass().getDegreesCartesian(), 0, 2);
+			Delay.msDelay(200);
 		}
 		
 	}

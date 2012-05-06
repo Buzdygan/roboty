@@ -1,6 +1,5 @@
 package robot;
 
-import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
 
 public class AlmostDifferentialPilot {
@@ -54,13 +53,6 @@ public class AlmostDifferentialPilot {
 		}
 		double insideSteerRatio = 1 - (Math.min(200, turnRate) / 100.0);
 		double outsideSteerRatio = 1 + ((Math.min(0, 200 - turnRate)) / 100);
-
-		LCD.clear(5);
-		LCD.drawInt((int)Math.round(turnRate), 0, 5);
-		LCD.clear(6);
-		LCD.drawInt((int)Math.round(insideSteerRatio * 1000), 0, 6);
-		LCD.clear(7);
-		LCD.drawInt((int)Math.round(outsideSteerRatio * 1000), 0, 7);
 		
 		outside.setSpeed(Math.round(currentSpeed * outsideSteerRatio));
 		inside.setSpeed(Math.round(currentSpeed * insideSteerRatio));
@@ -70,6 +62,20 @@ public class AlmostDifferentialPilot {
 		} else {
 			inside.backward();
 		}
+	}
+	
+	public void rotate(double angle) {
+		rotate(angle, false);
+	}
+	
+	public void rotate(double angle, boolean immediateReturn) { // in degrees
+		left.rotate((int) (-angle * (diameter / 2) / wheelRadius));
+		right.rotate((int) (angle * (diameter / 2) / wheelRadius), immediateReturn);
+	    if (!immediateReturn)  while (isMoving()) Thread.yield();
+	}
+	
+	public boolean isMoving() {
+		return left.isMoving() || right.isMoving();
 	}
 	
 	public void stop() {
