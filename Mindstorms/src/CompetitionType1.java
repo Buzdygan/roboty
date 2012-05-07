@@ -34,7 +34,7 @@ public class CompetitionType1 {
 		
 		Delay.msDelay(1000);
 		
-		arbiter.start();
+		//arbiter.start();
 		
 	}
 }

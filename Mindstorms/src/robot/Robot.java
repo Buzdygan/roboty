@@ -5,7 +5,6 @@ import java.util.List;
 
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
-import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -14,9 +13,8 @@ import lejos.nxt.addon.CompassMindSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
 import lejos.util.Delay;
-import position.Complex;
 import position.CurrentPositionBox;
-import position.Position;
+import position.PositionFinder;
 import position.PositionManager;
 
 public class Robot {
@@ -69,90 +67,7 @@ public class Robot {
 		diffPilot = new AlmostDifferentialPilot(wheelRadius, diameter, left, right);
 	}
 	
-	private int getMostProbable(List<Integer> elist)
-	{
-		float bestScore = 0;
-		int result = 0;
-		for(Integer el: elist)
-		{
-			float score = 0;
-			for(Integer el2: elist)
-				score += 1.0 / (1.0 + Math.abs(el - el2));
-			if(score > bestScore)
-			{
-				bestScore = score;
-				result = el;
-			}
-		}
-		return result;
-	}
 	
-	private int getXDistance(double angle, int dist)
-	{
-		int res = (int)((double) dist * Math.cos(angle));
-		if(angle < Math.PI * 1.5 && angle > Math.PI * 0.5)
-			return -res;
-		return 120 - res;
-	}
-	
-	private int getYDistance(double angle, int dist)
-	{
-		int res = (int)((double) dist * Math.sin(angle));
-		if(angle < Math.PI)
-			return 180 - res;
-		return -res;
-	}
-	
-	public Position findPosition(){
-		
-		LCD.drawString("AAA", 0,3);
-		
-		Position startPosition = new Position();
-		AlmostDifferentialPilot pilot = getDifferentialPilot();
-		List<Integer> xPositions = new ArrayList<Integer>();
-		List<Integer> yPositions = new ArrayList<Integer>();
-		final int turns = 12;
-		final int measurements = 7;
-		final int turnAngle = 360 / turns;
-		
-		for(int i = 0; i < turns; i++)
-		{
-			pilot.rotate(turnAngle);
-			Delay.msDelay(200);
-			if (Button.readButtons() != 0)
-				break;
-			List<Integer> dists = new ArrayList<Integer>();
-			for(int j = 0; j < measurements; j++)
-			{
-				int dist = ultrasonic.getDistance();
-				if(dist != 255)
-					dists.add(dist);
-				Delay.msDelay(50);
-			}
-			if(dists.isEmpty())
-				continue;
-			int dist = getMostProbable(dists);
-			LCD.clear();
-			LCD.drawInt(dist, 0, 0);
-			double angle = (90 + (int)compass.getDegreesCartesian()) % 360;
-			LCD.drawInt((int)angle, 0, 1);
-			angle = Math.PI * angle / 180.0;
-			int xpos = getXDistance(angle, dist);
-			int ypos = getYDistance(angle, dist);
-			xPositions.add(xpos);
-			yPositions.add(ypos);
-			LCD.drawInt(xpos, 0, 2);
-			LCD.drawInt(ypos, 0, 3);
-		}
-		int xPosition = getMostProbable(xPositions);
-		int yPosition = getMostProbable(yPositions);
-		LCD.clear();
-		LCD.drawInt(xPosition, 0, 0);
-		LCD.drawInt(yPosition, 0, 1);
-		Complex coordinates = new Complex(yPosition, 120 - xPosition);
-		startPosition.setCoordinates(coordinates);
-		return startPosition;
-	}
 
 	public NXTRegulatedMotor getLeft() {
 		return left;
@@ -261,8 +176,16 @@ public class Robot {
 */
 
 	public void initialize(CurrentPositionBox positionBox) {
-		Position startPosition = findPosition();
-		positionBox.setCurrentPosition(startPosition);
+		PositionFinder posfinder = new PositionFinder(this);
+		do{
+			posfinder.findPosition();
+			while((Button.readButtons() != Button.ID_RIGHT) && Button.readButtons() != Button.ID_ESCAPE)
+			{
+				Delay.msDelay(200);				
+			}
+		}while(Button.readButtons() != Button.ID_ESCAPE);
+		//Position startPosition = posfinder.findPosition();
+		//positionBox.setCurrentPosition(startPosition);
 		positionManager.setPositionBox(positionBox);
 		positionManager.reset();
 	}

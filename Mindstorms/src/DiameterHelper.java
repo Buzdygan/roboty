@@ -21,10 +21,11 @@ public class DiameterHelper {
 		Button.readButtons();
 
 		Robot robot = new Robot();
+		robot.getCompass().startCalibration();
 		robot.getCompass().resetCartesianZero();
 		compassReading = robot.getCompass().getDegreesCartesian();
 
-		while ((Math.abs(sum) < 360) && (Button.readButtons() == 0)) {
+		while ((Math.abs(sum) < 800) && (Button.readButtons() == 0)) {
 			motor.setSpeed(30);
 			motor.backward();
 
@@ -56,6 +57,7 @@ public class DiameterHelper {
 				new Float((float)Math.abs(motor.getTachoCount()) / 360).toString(), 0,
 				2);
 
+		robot.getCompass().stopCalibration();
 		Sound.beep();
 		Button.waitForAnyPress();
 	}
