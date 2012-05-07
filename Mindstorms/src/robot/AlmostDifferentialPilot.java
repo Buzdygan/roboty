@@ -17,7 +17,7 @@ public class AlmostDifferentialPilot {
 		this.diameter = diameter;
 		this.left = left;
 		this.right = right;
-		this.maxSpeed = Math.min(left.getMaxSpeed(), right.getMaxSpeed()) * 0.5;
+		this.maxSpeed = Math.min(left.getMaxSpeed(), right.getMaxSpeed()) * 0.9;
 		setCurrentSpeed(this.maxSpeed);
 	}
 

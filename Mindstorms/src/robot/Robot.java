@@ -50,6 +50,8 @@ public class Robot {
 	public Robot() {
 		left = Motor.C;
 		right = Motor.B;
+		left.setAcceleration(2000);
+		right.setAcceleration(2000);
 		initializeSensors();
 		positionManager = new PositionManager(left, right, wheelRadius, diameter);
 		actionList = new ArrayList<RobotAction>();
@@ -266,7 +268,7 @@ public class Robot {
 	}
 	
 	public boolean canHaveBall(int distance, int direction) {
-		return (((distance == MAX_DISTANCE) || (distance < 3)) && (direction != 0) && (Math.abs(direction - 5) < 2));
+		return (((distance == MAX_DISTANCE) || (distance < 10)) && (direction != 0) && (Math.abs(direction - 5) < 2));
 	}
 	
 }

@@ -1,5 +1,3 @@
-import lejos.nxt.Button;
-import lejos.nxt.LCD;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
@@ -21,7 +19,6 @@ public class CompetitionType1 {
 		
 		robot.initialize(positionBox);
 		
-		
 		Behavior behaviors[] = new Behavior[7];
 		behaviors[0] = new Kick(robot);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
@@ -33,7 +30,9 @@ public class CompetitionType1 {
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
 		
-		Button.waitForAnyPress();
+		// Button.waitForAnyPress();
+		
+		Delay.msDelay(1000);
 		
 		arbiter.start();
 		

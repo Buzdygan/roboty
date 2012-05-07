@@ -16,7 +16,8 @@ public class RotateToGoal extends RobotPositionBehavior {
 
 	@Override
 	public boolean takeControl() {
-		return !getCurrentPositionBox().inFrontOfOpponentsGoal();
+//		return !getCurrentPositionBox().inFrontOfOpponentsGoal();
+		return false;
 	}
 
 	@Override
