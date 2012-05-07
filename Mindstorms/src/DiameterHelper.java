@@ -3,6 +3,7 @@ import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Sound;
+import lejos.util.Delay;
 import robot.Robot;
 
 /**
@@ -15,6 +16,8 @@ public class DiameterHelper {
 		float compassReading, newReading, compassDifference, sum = 0;
 		NXTRegulatedMotor motor = Motor.B;
 
+		Delay.msDelay(1000);
+		
 		Button.readButtons();
 
 		Robot robot = new Robot();
@@ -47,11 +50,11 @@ public class DiameterHelper {
 		}
 		motor.stop();
 
-		LCD.drawString("diameter / wheel radius:", 0, 0);
-		LCD.drawString(
-				new Float(Math.abs(motor.getTachoCount()) / 360).toString(), 0,
-				2);
 		LCD.clear();
+		LCD.drawString("d / wh r:", 0, 0);
+		LCD.drawString(
+				new Float((float)Math.abs(motor.getTachoCount()) / 360).toString(), 0,
+				2);
 
 		Sound.beep();
 		Button.waitForAnyPress();

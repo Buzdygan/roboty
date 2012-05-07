@@ -1,6 +1,8 @@
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
+import lejos.util.Delay;
 import position.CurrentPositionBox;
 import robot.Robot;
 import behaviors.Exit;
@@ -18,6 +20,7 @@ public class CompetitionType1 {
 		CurrentPositionBox positionBox = new CurrentPositionBox();
 		
 		robot.initialize(positionBox);
+		
 		
 		Behavior behaviors[] = new Behavior[7];
 		behaviors[0] = new Kick(robot);

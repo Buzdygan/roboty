@@ -5,15 +5,13 @@ import robot.Robot;
 
 public class CurrentPositionBox {
 	
-	private final double pitchWidth, pitchHeight; // in millimeters
+	public static final double pitchWidth = 1200, pitchHeight = 1800; // in millimeters
 	private Complex opponentsGoalCoord, ourHalfCoord;
 	private final double diameter;
 	private Position currentPosition;
 	
-	public CurrentPositionBox(double pitchWidth, double pitchHeight, double diameter) {
+	public CurrentPositionBox(double diameter) {
 		super();
-		this.pitchWidth = pitchWidth;
-		this.pitchHeight = pitchHeight;
 		this.opponentsGoalCoord = new Complex(pitchHeight, pitchWidth / 2);
 		this.ourHalfCoord = new Complex(pitchHeight / 3, pitchWidth / 2);
 		this.diameter = diameter;
@@ -28,7 +26,7 @@ public class CurrentPositionBox {
 	}
 
 	public CurrentPositionBox() {
-		this(1200, 1800, Robot.getDiameter());
+		this(Robot.getDiameter());
 	}
 
 	public Position getCurrentPosition() {

@@ -17,7 +17,7 @@ public class AlmostDifferentialPilot {
 		this.diameter = diameter;
 		this.left = left;
 		this.right = right;
-		this.maxSpeed = Math.min(left.getMaxSpeed(), right.getMaxSpeed()) * 0.8;
+		this.maxSpeed = Math.min(left.getMaxSpeed(), right.getMaxSpeed()) * 0.5;
 		setCurrentSpeed(this.maxSpeed);
 	}
 
@@ -69,7 +69,7 @@ public class AlmostDifferentialPilot {
 	}
 	
 	public void rotate(double angle, boolean immediateReturn) { // in degrees
-		left.rotate((int) (-angle * (diameter / 2) / wheelRadius));
+		left.rotate((int) (-angle * (diameter / 2) / wheelRadius), true);
 		right.rotate((int) (angle * (diameter / 2) / wheelRadius), immediateReturn);
 	    if (!immediateReturn)  while (isMoving()) Thread.yield();
 	}

@@ -64,7 +64,7 @@ public class Robot {
 		
 		kicker = Motor.A;
 		pilot = new SimplePilot(left, right, wheelRadius, diameter);
-		diffPilot = new AlmostDifferentialPilot(wheelRadius * 2, diameter, left, right);
+		diffPilot = new AlmostDifferentialPilot(wheelRadius, diameter, left, right);
 	}
 	
 	private int getMostProbable(List<Integer> elist)
@@ -102,6 +102,9 @@ public class Robot {
 	}
 	
 	public Position findPosition(){
+		
+		LCD.drawString("AAA", 0,3);
+		
 		Position startPosition = new Position();
 		AlmostDifferentialPilot pilot = getDifferentialPilot();
 		List<Integer> xPositions = new ArrayList<Integer>();
@@ -112,6 +115,8 @@ public class Robot {
 		
 		for(int i = 0; i < turns; i++)
 		{
+			pilot.rotate(turnAngle);
+			Delay.msDelay(200);
 			if (Button.readButtons() != 0)
 				break;
 			List<Integer> dists = new ArrayList<Integer>();
@@ -136,8 +141,6 @@ public class Robot {
 			yPositions.add(ypos);
 			LCD.drawInt(xpos, 0, 2);
 			LCD.drawInt(ypos, 0, 3);
-			pilot.rotate(turnAngle);
-			Delay.msDelay(200);
 		}
 		int xPosition = getMostProbable(xPositions);
 		int yPosition = getMostProbable(yPositions);
