@@ -2,7 +2,6 @@ package behaviors;
 
 import lejos.nxt.LCD;
 import position.CurrentPositionBox;
-import position.PositionFinder;
 import robot.Robot;
 
 public class UpdatePosition extends RobotPositionBehavior {
