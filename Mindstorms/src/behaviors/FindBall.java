@@ -2,6 +2,7 @@ package behaviors;
 
 import position.CurrentPositionBox;
 import lejos.nxt.LCD;
+import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
@@ -46,6 +47,7 @@ public class FindBall extends RobotPositionBehavior {
 
 	@Override
 	public void action() {
+		RConsole.println("=== FIND BALL ===");
 		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
 		suppressed = false;
 		

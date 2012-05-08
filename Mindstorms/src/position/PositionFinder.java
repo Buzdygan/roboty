@@ -102,8 +102,6 @@ public class PositionFinder {
 	
 	public Position findPosition(){
 		
-		LCD.drawString("AAA", 0,3);
-		
 		Position startPosition = new Position();
 		AlmostDifferentialPilot pilot = robot.getDifferentialPilot();
 		List<Integer> xPositions = new ArrayList<Integer>();

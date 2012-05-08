@@ -1,6 +1,7 @@
 package behaviors;
 
 import lejos.nxt.LCD;
+import lejos.nxt.comm.RConsole;
 import position.CurrentPositionBox;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
@@ -20,30 +21,35 @@ public class RotateToGoal extends RobotPositionBehavior {
 
 	@Override
 	public boolean takeControl() {
-		return !getCurrentPositionBox().inFrontOfOpponentsGoal();
+		return !getCurrentPositionBox().almostInFrontOfOpponentsGoal();
 	}
 
 	@Override
 	public void action() {
-		LCD.clear(0);
-		LCD.drawString("rotGoal", 0, 0);
+		RConsole.println("=== ROTATE TO GOAL ===");
 		
 		suppressed = false;
 
 		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
-		LCD.drawString("fast", 0, 2);
-		while ((!suppressed) && getCurrentPositionBox().inFrontOfOpponentsGoal()) {
+		RConsole.println("=== IN ===");
+		while ((!suppressed) && !getCurrentPositionBox().almostInFrontOfOpponentsGoal()) {
+			getCurrentPositionBox().printOpponentsGoal();
 			pilot.setCurrentSpeed(pilot.getMaxSpeed() * fastSpeed);
-			pilot.steer(steerRate * getCurrentPositionBox().getRotationToOpponentsGoal(steerRate));
+			int result = getCurrentPositionBox().getRotationToOpponentsGoal(steerRate);
+			RConsole.println("Direction: " + Integer.toString(result));
+			pilot.steer(steerRate * result);
 			Thread.yield();
 		}
-		LCD.drawString("slow", 0, 2);
-		while ((!suppressed) && getCurrentPositionBox().almostInFrontOfOpponentsGoal()) {
+		RConsole.println("=== MIDDLE ===");
+		while ((!suppressed) && !getCurrentPositionBox().inFrontOfOpponentsGoal()) {
+			getCurrentPositionBox().printOpponentsGoal();
 			pilot.setCurrentSpeed(pilot.getMaxSpeed() * slowSpeed);
-			pilot.steer(steerRate * getCurrentPositionBox().getRotationToOpponentsGoal(steerRate));
+			int result = getCurrentPositionBox().getRotationToOpponentsGoal(steerRate);
+			RConsole.println("Direction: " + Integer.toString(result));
+			pilot.steer(steerRate * result);
 		}
+		RConsole.println("=== OUT ===");
 		pilot.steer(0);
-		LCD.clear();
 	}
 
 	@Override
