@@ -18,7 +18,7 @@ public class FindAndKick {
 		robot.initialize(positionBox);
 		
 		Behavior behaviors[] = new Behavior[4];
-		behaviors[0] = new Kick(robot);
+		behaviors[0] = new Kick(robot, positionBox);
 		behaviors[1] = new FindBall(robot, positionBox);
 		behaviors[2] = new UpdatePosition(robot, positionBox);
 		behaviors[3] = new Exit();

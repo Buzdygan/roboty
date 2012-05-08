@@ -26,6 +26,8 @@ public class RotateToGoal extends RobotPositionBehavior {
 
 	@Override
 	public void action() {
+		LCD.clear(0);
+		LCD.drawString("ROTATE GOAL", 0, 0);
 		RConsole.println("=== ROTATE TO GOAL ===");
 		
 		suppressed = false;

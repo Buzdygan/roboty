@@ -25,8 +25,6 @@ public class FindBall extends RobotPositionBehavior {
 	
 	@Override
 	public boolean takeControl() {
-		LCD.clear(0);
-		LCD.drawString("findBall", 0, 0);
 		
 		if (currentPositionBox.gotBall()) {
 			int distance = getRobot().getUltrasonic().getDistance();
@@ -47,7 +45,10 @@ public class FindBall extends RobotPositionBehavior {
 
 	@Override
 	public void action() {
+		LCD.clear(0);
+		LCD.drawString("FIND BALL", 0, 0);
 		RConsole.println("=== FIND BALL ===");
+		
 		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
 		suppressed = false;
 		
