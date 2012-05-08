@@ -135,6 +135,7 @@ public class PositionFinder {
 		LCD.drawInt(yPosition, 0, 1);
 		Complex coordinates = new Complex(yPosition, 120 - xPosition);
 		startPosition.setCoordinates(coordinates);
+		startPosition.getCoordinates().mul(new Complex(10,0)); // translate centimeters to millimeters
 		return startPosition;
 	}
 

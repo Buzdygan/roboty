@@ -6,34 +6,37 @@ import robot.Robot;
 
 public class RotateToGoal extends RobotPositionBehavior {
 
-	private final double steerRate = 30;
+	private final double steerRate = 50;
+	private double slowSpeed, fastSpeed;
 	
 	private boolean suppressed = false;
 	
 	public RotateToGoal(Robot robot, CurrentPositionBox currentPositionBox) {
 		super(robot, currentPositionBox);
+		slowSpeed = 0.3;
+		fastSpeed = 0.8;
 	}
 
 	@Override
 	public boolean takeControl() {
-//		return !getCurrentPositionBox().inFrontOfOpponentsGoal();
-		return false;
+		return !getCurrentPositionBox().inFrontOfOpponentsGoal();
 	}
 
 	@Override
 	public void action() {
 		suppressed = false;
-		
+
 		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
-		while ((!suppressed) && getCurrentPositionBox().almostInFrontOfOpponentsGoal()) {
-			pilot.setCurrentSpeed(pilot.getMaxSpeed());
-			pilot.steer(steerRate * getCurrentPositionBox().getRotationToOpponentsGoal(steerRate));
-		}
 		while ((!suppressed) && getCurrentPositionBox().inFrontOfOpponentsGoal()) {
-			pilot.setCurrentSpeed(pilot.getMaxSpeed() * 0.8);
+			pilot.setCurrentSpeed(pilot.getMaxSpeed() * fastSpeed);
+			pilot.steer(steerRate * getCurrentPositionBox().getRotationToOpponentsGoal(steerRate));
+			Thread.yield();
+		}
+		while ((!suppressed) && getCurrentPositionBox().almostInFrontOfOpponentsGoal()) {
+			pilot.setCurrentSpeed(pilot.getMaxSpeed() * slowSpeed);
 			pilot.steer(steerRate * getCurrentPositionBox().getRotationToOpponentsGoal(steerRate));
 		}
-		pilot.stop();
+		pilot.steer(0);
 	}
 
 	@Override

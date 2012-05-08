@@ -25,8 +25,8 @@ public class Robot {
 	 * Use DiameterHelper to get diameter / wheelRadius value;
 	 */
 	
-	static final double wheelRadius = 21.6;
-	static final double diameter = wheelRadius * 6.175;
+	static final double wheelRadius = 21.6; // in millimeters
+	static final double diameter = wheelRadius * 6.175; // in millimeters
 	static final int MAX_DISTANCE = 255;
 	
 	public static double getDiameter() {

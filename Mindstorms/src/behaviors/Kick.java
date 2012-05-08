@@ -1,10 +1,5 @@
 package behaviors;
 
-import javax.microedition.lcdui.Alert;
-
-import lejos.util.Delay;
-
-import robot.AlmostDifferentialPilot;
 import robot.Robot;
 
 public class Kick extends RobotBehavior {
@@ -24,15 +19,7 @@ public class Kick extends RobotBehavior {
 
 	@Override
 	public void action() {
-		suppressed = false;
-		//getRobot().kick();
-		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
-		pilot.setCurrentSpeed(pilot.getMaxSpeed() * 0.3);
-		pilot.steer(50);
-		
-		while (!suppressed) {
-			Thread.yield();
-		}
+		getRobot().kick();
 	}
 
 	@Override

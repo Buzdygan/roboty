@@ -1,7 +1,8 @@
 package position;
 
 public class Position {
-
+	
+	// in millimeters
 	private Complex coordinates;
 	private Complex rotation;  // rotation.getNorm() == 1;
 
