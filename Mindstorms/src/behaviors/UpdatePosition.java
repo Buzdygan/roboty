@@ -20,7 +20,7 @@ public class UpdatePosition extends RobotPositionBehavior {
 		LCD.drawInt((int)getCurrentPosition().getCoordinates().getIm(), 5, 5);
 		
 		LCD.clear(6);
-		LCD.drawInt((int)getCurrentPosition().getRotation().getAngle(), 0, 6);
+		LCD.drawInt((int)(getCurrentPosition().getRotation().getAngle() * 180 / Math.PI), 0, 6);
 		
 		// TODO
 		

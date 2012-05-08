@@ -2,6 +2,7 @@ import lejos.nxt.Button;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import position.CurrentPositionBox;
+import position.PositionFinder;
 import robot.Robot;
 import behaviors.Exit;
 import behaviors.FindBall;
@@ -17,7 +18,7 @@ public class CompetitionType2 {
 		Robot robot = new Robot();
 		CurrentPositionBox positionBox = new CurrentPositionBox();
 		
-		robot.initialize(positionBox);
+		robot.initialize(positionBox, new PositionFinder(robot).findPosition());
 		
 		Behavior behaviors[] = new Behavior[7];
 		behaviors[0] = new Kick(robot);

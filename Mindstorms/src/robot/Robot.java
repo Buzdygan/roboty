@@ -176,25 +176,14 @@ public class Robot {
 	}
 */
 
-	public void initialize(CurrentPositionBox positionBox) {
-		
-		
-		PositionFinder posfinder = new PositionFinder(this);
-		/*
-		do{
-			posfinder.findPosition();
-			while((Button.readButtons() != Button.ID_RIGHT) && Button.readButtons() != Button.ID_ESCAPE)
-			{
-				Delay.msDelay(200);				
-			}
-		}while(Button.readButtons() != Button.ID_ESCAPE);
-		*/
-		Position startPosition = posfinder.findPosition();
-		Button.waitForAnyPress();
-		//Position startPosition = new Position();
+	public void initialize(CurrentPositionBox positionBox, Position startPosition) {
 		positionBox.setCurrentPosition(startPosition);
 		positionManager.setPositionBox(positionBox);
 		positionManager.reset();
+	}
+	
+	public void initialize(CurrentPositionBox positionBox) {
+		initialize(positionBox, new Position());
 	}
 	
 	public boolean canHaveBall(int distance, int direction) {
