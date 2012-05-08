@@ -9,7 +9,16 @@ public class CurrentPositionBox {
 	private Complex opponentsGoalCoord, ourHalfCoord;
 	private final double diameter;
 	private Position currentPosition;
+	boolean gotBall = false;
 	
+	public boolean gotBall() {
+		return gotBall;
+	}
+
+	public void setGotBall(boolean gotBall) {
+		this.gotBall = gotBall;
+	}
+
 	public CurrentPositionBox(double diameter) {
 		super();
 		this.opponentsGoalCoord = new Complex(pitchHeight, pitchWidth / 2);

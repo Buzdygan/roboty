@@ -12,13 +12,17 @@ import robot.Robot;
 public class PositionFinder {
 	
 	private Robot robot;
+	private final int DIST_MODIFIER = 2;
 	private final int LONG_SIDE = 1;
 	private final int SHORT_SIDE = 2;
-	private final int turns = 12;
-	private final int measurements = 7;
-	private final int turnAngle = 360 / turns;
-	private final int measurementDelay = 50;
-	private final int turnDelay = 2000;
+	private final int TURNS = 12;
+	private final int MEASUREMENTS = 7;
+	private final int TURN_ANGLE = 360 / TURNS;
+	private final int MEASUREMENT_DELAY = 50;
+	private final int TURN_DELAY = 200;
+	private final int HORIZON_LENGTH = 120;
+	private final int VERTICAL_LENGTH = 180;
+	private final int WRONG_DIST = 255;
 	
 	public PositionFinder(Robot rob)
 	{
@@ -48,14 +52,14 @@ public class PositionFinder {
 		int res = (int)((double) dist * Math.cos(angle));
 		if(angle < Math.PI * 1.5 && angle > Math.PI * 0.5)
 			return -res;
-		return 120 - res;
+		return HORIZON_LENGTH - res;
 	}
 	
 	private int getYDistance(double angle, int dist)
 	{
 		int res = (int)((double) dist * Math.sin(angle));
 		if(angle < Math.PI)
-			return 180 - res;
+			return VERTICAL_LENGTH - res;
 		return -res;
 	}
 	
@@ -84,34 +88,31 @@ public class PositionFinder {
 		List<Integer> yPositions = new ArrayList<Integer>();
 		
 		
-		for(int i = 0; i < turns; i++)
+		for(int i = 0; i < TURNS; i++)
 		{
-			pilot.rotate(turnAngle);
-			Delay.msDelay(turnDelay);
+			pilot.rotate(TURN_ANGLE);
+			Delay.msDelay(TURN_DELAY);
 			if (Button.readButtons() == Button.ID_LEFT)
 				break;
 			List<Integer> dists = new ArrayList<Integer>();
-			for(int j = 0; j < measurements; j++)
+			for(int j = 0; j < MEASUREMENTS; j++)
 			{
-				int dist = robot.getUltrasonic().getDistance();
-				if(dist != 255)
+				int dist = robot.getUltrasonic().getDistance() + DIST_MODIFIER;
+				if(dist != WRONG_DIST)
 					dists.add(dist);
-				Delay.msDelay(measurementDelay);
+				Delay.msDelay(MEASUREMENT_DELAY);
 			}
 			if(dists.isEmpty())
 				continue;
 			int dist = getMostProbable(dists);
 			LCD.clear();
-			//LCD.drawInt(dist, 0, 0);
 			
-
 			int comp = (int)robot.getCompass().getDegreesCartesian();
 			LCD.drawInt(comp, 0, 0);
 			int ang = (90 + comp) % 360;
 			int side = whichSide(ang);
-			//LCD.drawInt(side, 0, 0);
+			LCD.drawInt(side, 0, 0);
 			LCD.drawInt(ang, 4, 0);
-			//LCD.drawInt(ang, 0, 1);
 			double angle = Math.PI * ang / 180.0;
 			
 			if((side & LONG_SIDE) > 0)
@@ -133,7 +134,7 @@ public class PositionFinder {
 		LCD.clear();
 		LCD.drawInt(xPosition, 0, 0);
 		LCD.drawInt(yPosition, 0, 1);
-		Complex coordinates = new Complex(yPosition, 120 - xPosition);
+		Complex coordinates = new Complex(yPosition, HORIZON_LENGTH - xPosition);
 		startPosition.setCoordinates(coordinates);
 		startPosition.getCoordinates().mul(new Complex(10,0)); // translate centimeters to millimeters
 		return startPosition;

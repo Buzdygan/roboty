@@ -1,11 +1,16 @@
 package behaviors;
 
+import position.CurrentPositionBox;
 import lejos.nxt.LCD;
 import lejos.util.Delay;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
 
-public class FindBall extends RobotBehavior {
+public class FindBall extends RobotPositionBehavior {
+
+	public FindBall(Robot robot, CurrentPositionBox currentPositionBox) {
+		super(robot, currentPositionBox);
+	}
 
 	private final double TURN_RATE = 75;
 	private final double ROTATE_SPEED = 0.4;
@@ -14,19 +19,15 @@ public class FindBall extends RobotBehavior {
 	private final int LOST_BALL_THRESHOLD = 10;
 	
 	private boolean suppressed = false;
-	boolean gotBall = false;
+	
 	int lostBallCounter = 0;
 	
-	public FindBall(Robot robot) {
-		super(robot);
-	}
-
 	@Override
 	public boolean takeControl() {
 		LCD.clear(0);
 		LCD.drawString("findBall", 0, 0);
 		
-		if (gotBall) {
+		if (currentPositionBox.gotBall()) {
 			int distance = getRobot().getUltrasonic().getDistance();
 			int direction = getRobot().getSeeker().getDirection();
 			
@@ -36,11 +37,11 @@ public class FindBall extends RobotBehavior {
 				lostBallCounter = 0;
 			}
 			if (lostBallCounter >= LOST_BALL_THRESHOLD) {
-				gotBall = false;
+				currentPositionBox.setGotBall(false);
 				lostBallCounter = 0;
 			}
 		}
-		return !gotBall;
+		return !currentPositionBox.gotBall();
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class FindBall extends RobotBehavior {
 			}
 			
 			if (canCatchIt && getRobot().canHaveBall(distance, direction)) {
-				gotBall = true;
+				currentPositionBox.setGotBall(true);
 				continue;
 			}
 			
@@ -87,7 +88,7 @@ public class FindBall extends RobotBehavior {
 			
 			pilot.steer(TURN_RATE * (-direction));
 			
-		} while ((!suppressed) && (!gotBall));
+		} while ((!suppressed) && (!currentPositionBox.gotBall()));
 
 		if (!suppressed) {
 			Delay.msDelay(DELAY_LENGTH);

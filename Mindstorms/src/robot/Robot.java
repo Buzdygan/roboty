@@ -3,6 +3,7 @@ package robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
@@ -11,8 +12,10 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.addon.CompassHTSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
+import lejos.util.Delay;
 import position.CurrentPositionBox;
 import position.Position;
+import position.PositionFinder;
 import position.PositionManager;
 
 public class Robot {
@@ -174,8 +177,10 @@ public class Robot {
 */
 
 	public void initialize(CurrentPositionBox positionBox) {
-		/*
+		
+		
 		PositionFinder posfinder = new PositionFinder(this);
+		/*
 		do{
 			posfinder.findPosition();
 			while((Button.readButtons() != Button.ID_RIGHT) && Button.readButtons() != Button.ID_ESCAPE)
@@ -184,8 +189,9 @@ public class Robot {
 			}
 		}while(Button.readButtons() != Button.ID_ESCAPE);
 		*/
-		//Position startPosition = posfinder.findPosition();
-		Position startPosition = new Position();
+		Position startPosition = posfinder.findPosition();
+		Button.waitForAnyPress();
+		//Position startPosition = new Position();
 		positionBox.setCurrentPosition(startPosition);
 		positionManager.setPositionBox(positionBox);
 		positionManager.reset();
