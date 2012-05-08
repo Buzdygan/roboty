@@ -26,7 +26,7 @@ public class CompetitionType1 {
 		behaviors[1] = new RotateToGoal(robot, positionBox);
 		behaviors[2] = new MoveToOurHalf(robot, positionBox);
 		behaviors[3] = new RotateToOurHalf(robot, positionBox);
-		behaviors[4] = new FindBall(robot);
+		behaviors[4] = new FindBall(robot, positionBox);
 		behaviors[5] = new UpdatePosition(robot, positionBox);
 		behaviors[6] = new Exit();
 
