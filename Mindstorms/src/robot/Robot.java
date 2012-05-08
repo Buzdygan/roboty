@@ -44,6 +44,16 @@ public class Robot {
 	private SimplePilot pilot;
 	
 	private PositionManager positionManager;
+	private PositionFinder positionFinder;
+	
+	public PositionFinder getPositionFinder() {
+		return positionFinder;
+	}
+
+	public void setPositionFinder(PositionFinder positionFinder) {
+		this.positionFinder = positionFinder;
+	}
+
 	private List<RobotAction> actionList;
 
 	public Robot() {
@@ -53,6 +63,7 @@ public class Robot {
 		right.setAcceleration(2000);
 		initializeSensors();
 		positionManager = new PositionManager(left, right, wheelRadius, diameter);
+		positionFinder = new PositionFinder(this);
 		actionList = new ArrayList<RobotAction>();
 	}
 	

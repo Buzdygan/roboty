@@ -22,6 +22,9 @@ public class UpdatePosition extends RobotPositionBehavior {
 		LCD.clear(6);
 		LCD.drawInt((int)(getCurrentPosition().getRotation().getAngle() * 180 / Math.PI), 0, 6);
 		
+		if(getRobot().getPositionFinder().verifyPosition(getCurrentPosition()) == false)
+			return true;
+		
 		// TODO
 		
 		return false;
@@ -29,7 +32,7 @@ public class UpdatePosition extends RobotPositionBehavior {
 
 	@Override
 	public void action() {
-		setCurrentPosition(new PositionFinder(getRobot()).findPosition());
+		setCurrentPosition(getRobot().getPositionFinder().findPosition());
 	}
 
 	@Override

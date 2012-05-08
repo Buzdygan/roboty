@@ -15,22 +15,30 @@ public class PositionFinder {
 	private final int DIST_MODIFIER = 2;
 	private final int LONG_SIDE = 1;
 	private final int SHORT_SIDE = 2;
+	private final int FRONT_SIDE = 1;
+	private final int LEFT_SIDE = 2;
+	private final int BACK_SIDE = 3;
+	private final int RIGHT_SIDE = 4;
 	private final int TURNS = 12;
 	private final int MEASUREMENTS = 7;
 	private final int TURN_ANGLE = 360 / TURNS;
 	private final int MEASUREMENT_DELAY = 50;
 	private final int TURN_DELAY = 200;
-	private final int HORIZON_LENGTH = 120;
-	private final int VERTICAL_LENGTH = 180;
+	private final int WIDTH = 120;
+	private final int HEIGHT = 180;
 	private final int WRONG_DIST = 255;
+	private final int BAD_POSITION_ALARM_NUMBER = 4;
+	private final int ACCEPTABLE_DIST_ERROR = 50;
+	
+	private int badPositionCounter;
 	
 	public PositionFinder(Robot rob)
 	{
 		robot = rob;
+		badPositionCounter = 0;
 	}
 	
-	private int getMostProbable(List<Integer> elist)
-	{
+	private int getMostProbable(List<Integer> elist){
 		float bestScore = 0;
 		int result = 0;
 		for(Integer el: elist)
@@ -47,25 +55,39 @@ public class PositionFinder {
 		return result;
 	}
 	
-	private int getXDistance(double angle, int dist)
-	{
+	private int getXDistance(double angle, int dist){
 		int res = (int)((double) dist * Math.cos(angle));
 		if(angle < Math.PI * 1.5 && angle > Math.PI * 0.5)
 			return -res;
-		return HORIZON_LENGTH - res;
+		return WIDTH - res;
 	}
 	
-	private int getYDistance(double angle, int dist)
-	{
+	private int getYDistance(double angle, int dist){
 		int res = (int)((double) dist * Math.sin(angle));
 		if(angle < Math.PI)
-			return VERTICAL_LENGTH - res;
+			return HEIGHT - res;
 		return -res;
 	}
 	
-	private boolean in(int a, int b, int v)
-	{
+	private boolean in(double a, double b, double v){
 		return(v >= a && v <= b);
+	}
+	
+	private int getAng(){
+		int comp = (int)robot.getCompass().getDegreesCartesian();
+		return (90 + comp) % 360;
+	}
+	
+	private double getAngle(int ang){
+		return Math.PI * ang / 180.0;
+	}
+	
+	private double getAngle(){
+		return getAngle(getAng());
+	}
+	
+	private int getDist(){
+		return robot.getUltrasonic().getDistance() + DIST_MODIFIER;
 	}
 	
 	private int whichSide(int angle)
@@ -97,24 +119,20 @@ public class PositionFinder {
 			List<Integer> dists = new ArrayList<Integer>();
 			for(int j = 0; j < MEASUREMENTS; j++)
 			{
-				int dist = robot.getUltrasonic().getDistance() + DIST_MODIFIER;
-				if(dist != WRONG_DIST)
-					dists.add(dist);
+				int distance = getDist();
+				if(distance != WRONG_DIST)
+					dists.add(distance);
 				Delay.msDelay(MEASUREMENT_DELAY);
 			}
 			if(dists.isEmpty())
 				continue;
 			int dist = getMostProbable(dists);
 			LCD.clear();
-			
-			int comp = (int)robot.getCompass().getDegreesCartesian();
-			LCD.drawInt(comp, 0, 0);
-			int ang = (90 + comp) % 360;
+			int ang = getAng();
 			int side = whichSide(ang);
 			LCD.drawInt(side, 0, 0);
 			LCD.drawInt(ang, 4, 0);
-			double angle = Math.PI * ang / 180.0;
-			
+			double angle = getAngle(ang);
 			if((side & LONG_SIDE) > 0)
 			{
 				int xpos = getXDistance(angle, dist);
@@ -134,10 +152,60 @@ public class PositionFinder {
 		LCD.clear();
 		LCD.drawInt(xPosition, 0, 0);
 		LCD.drawInt(yPosition, 0, 1);
-		Complex coordinates = new Complex(yPosition, HORIZON_LENGTH - xPosition);
+		Complex coordinates = new Complex(yPosition, WIDTH - xPosition);
 		startPosition.setCoordinates(coordinates);
 		startPosition.getCoordinates().mul(new Complex(10,0)); // translate centimeters to millimeters
 		return startPosition;
+	}
+	
+	private boolean checkMeasurements(double expectedDist, double dist)
+	{
+		return Math.abs(expectedDist - dist) < ACCEPTABLE_DIST_ERROR; // in milimeters
+	}
+	
+	private int getSide(double xPos, double yPos, double angle){
+		double zeroAngle = 0.0;
+		double frontLeftAngle = new Complex(HEIGHT - yPos, xPos).getAngle();
+		double backLeftAngle = new Complex(-yPos, xPos).getAngle();
+		double backRightAngle = new Complex(-yPos, xPos - WIDTH).getAngle();
+		double frontRightAngle = new Complex(HEIGHT - yPos, xPos - WIDTH).getAngle();
+		double endAngle = 360.0;
+		if(in(zeroAngle, frontLeftAngle, angle) || in(frontRightAngle, endAngle, angle))
+			return FRONT_SIDE;
+		if(in(frontLeftAngle, backLeftAngle, angle))
+			return LEFT_SIDE;
+		if(in(backLeftAngle, backRightAngle, angle))
+			return BACK_SIDE;
+		if(in(backRightAngle, frontRightAngle, angle))
+			return RIGHT_SIDE;
+		return 0;
+	}
+	
+	/* returns expected distance in milimeters */
+	public double expectedDistance(Position position)
+	{
+		double xPos = WIDTH - position.getCoordinates().getIm();
+		double yPos = position.getCoordinates().getRe();
+		double angle = getAngle();
+		int side = getSide(xPos, yPos, angle);
+		return 0.0;
+	}
+	
+	public boolean verifyPosition(Position position)
+	{
+		double dist = getDist() * 10.0; // convert to milimeters
+		if(checkMeasurements(expectedDistance(position), dist) == false)
+		{
+			badPositionCounter ++;
+			if(badPositionCounter >= BAD_POSITION_ALARM_NUMBER)
+			{
+				badPositionCounter = 0;
+				return false;
+			}
+		}
+		else
+			badPositionCounter = 0;
+		return true;
 	}
 
 }

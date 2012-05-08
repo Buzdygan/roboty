@@ -19,7 +19,7 @@ public class CompetitionType1 {
 		Robot robot = new Robot();
 		CurrentPositionBox positionBox = new CurrentPositionBox();
 		
-		robot.initialize(positionBox, new PositionFinder(robot).findPosition());
+		robot.initialize(positionBox, robot.getPositionFinder().findPosition());
 		
 		Behavior behaviors[] = new Behavior[7];
 		behaviors[0] = new Kick(robot);
