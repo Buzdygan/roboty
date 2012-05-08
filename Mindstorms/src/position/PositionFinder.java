@@ -161,12 +161,12 @@ public class PositionFinder {
 		return Math.abs(expectedDist - dist) < ACCEPTABLE_DIST_ERROR; // in milimeters
 	}
 	
-	private int getSide(double xPos, double yPos, double angle){
+	private int getSide(double front, double left, double back, double right, double angle){
 		double zeroAngle = 0.0;
-		double frontLeftAngle = new Complex(HEIGHT - yPos, xPos).getAngle();
-		double backLeftAngle = new Complex(-yPos, xPos).getAngle();
-		double backRightAngle = new Complex(-yPos, xPos - WIDTH).getAngle();
-		double frontRightAngle = new Complex(HEIGHT - yPos, xPos - WIDTH).getAngle();
+		double frontLeftAngle = new Complex(front, left).getAngle();
+		double backLeftAngle = new Complex(back, left).getAngle();
+		double backRightAngle = new Complex(back, right).getAngle();
+		double frontRightAngle = new Complex(front, right).getAngle();
 		double endAngle = 360.0;
 		if(in(zeroAngle, frontLeftAngle, angle) || in(frontRightAngle, endAngle, angle))
 			return FRONT_SIDE;
@@ -182,11 +182,30 @@ public class PositionFinder {
 	/* returns expected distance in milimeters */
 	public double expectedDistance(Position position)
 	{
-		double xPos = WIDTH - position.getCoordinates().getIm();
-		double yPos = position.getCoordinates().getRe();
+		double res = 0.0;
+		double yPos = position.getCoordinates().getIm();
+		double xPos = position.getCoordinates().getRe();
+		double front = HEIGHT - xPos;
+		double left = WIDTH - yPos;
+		double back = -xPos;
+		double right = -yPos;
 		double angle = getAngle();
-		int side = getSide(xPos, yPos, angle);
-		return 0.0;
+		int side = getSide(front, left, back, right, angle);
+		switch(side){
+			case FRONT_SIDE:
+				res = front * Math.cos(angle);
+				break;
+			case LEFT_SIDE:
+				res = left * Math.sin(angle);
+				break;
+			case BACK_SIDE:
+				res = back * Math.cos(angle);
+				break;
+			case RIGHT_SIDE:
+				res = right * Math.sin(angle);
+				break;
+		}
+		return res * 10.0;
 	}
 	
 	public boolean verifyPosition(Position position)
