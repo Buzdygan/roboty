@@ -77,7 +77,7 @@ public class CurrentPositionBox {
 				getCurrentPosition().getCoordinates()).div(
 				getCurrentPosition().getRotation());
 //		if ((left > 0) && (right > 0)) {
-			return (int) Math.round(Math.signum(-relative.getAngle()));
+			return (int) Math.round(Math.signum(relative.getAngle()));
 /*		}
 		if (left > 0) {
 			return 1;

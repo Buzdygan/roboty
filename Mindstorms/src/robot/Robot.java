@@ -3,7 +3,6 @@ package robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
@@ -12,7 +11,6 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.addon.CompassHTSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
-import lejos.util.Delay;
 import position.CurrentPositionBox;
 import position.Position;
 import position.PositionFinder;
@@ -157,35 +155,6 @@ public class Robot {
 		getKicker().rotate(-90);
 		getKicker().rotate(90);
 	}
-/*	
-	public void run() {
-		long endTime, timeDiff = 0;
-
-		endTime = System.currentTimeMillis();
-		while (runNextAction()) {
-			positionManager.updatePosition(pilot.getPreviousMovement(timeDiff));;
-			
-			// LCD.clear();
-			// LCD.drawString( positionManager1.getCurrentPosition().getCoordinates().toString(), 0, 0);
-			// LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
-			
-			timeDiff = System.currentTimeMillis() - endTime;
-			if (timeDiff < actionTime) {
-				Delay.msDelay(actionTime - timeDiff);
-			} else {
-				LCD.drawString(Long.toString(timeDiff), 0, 7);
-			}
-			timeDiff = System.currentTimeMillis() - endTime;
-			endTime += timeDiff;
-		}
-		positionManager.updatePosition(pilot.getPreviousMovement(timeDiff));
-
-		// LCD.clear();
-		// LCD.drawString( positionManager1.getCurrentPosition().getCoordinates().toString(), 0, 0);
-		// LCD.drawString( positionManager1.getCurrentPosition().getRotation().toString(), 0, 1);
-
-	}
-*/
 
 	public void initialize(CurrentPositionBox positionBox, Position startPosition) {
 		positionBox.setCurrentPosition(startPosition);

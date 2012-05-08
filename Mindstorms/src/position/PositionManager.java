@@ -51,7 +51,7 @@ public class PositionManager {
 
 	private void updatePositionUsingDistance(double leftDistance,
 			double rightDistance) {
-		double alpha = (leftDistance - rightDistance) / diameter;
+		double alpha = (rightDistance - leftDistance) / diameter;
 		double distance;
 		if (Math.abs(alpha) < eps) {
 			distance = (leftDistance + rightDistance) / 2;
