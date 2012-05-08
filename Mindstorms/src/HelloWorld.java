@@ -12,8 +12,8 @@ public class HelloWorld {
 		while (Button.readButtons() == 0) {
 			LCD.clear();
 			LCD.drawInt(robot.getUltrasonic().getDistance(), 0, 0);
-			LCD.drawInt((int)robot.getCompass().getDegrees(), 0, 1);
-			LCD.drawInt((int)robot.getCompass().getDegreesCartesian(), 0, 2);
+			LCD.drawInt((int)robot.getCompass().getDegrees(), 0, 2);
+			LCD.drawInt((int)robot.getCompass().getDegreesCartesian(), 0, 3);
 			Delay.msDelay(200);
 		}
 		

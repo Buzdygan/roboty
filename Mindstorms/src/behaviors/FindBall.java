@@ -8,7 +8,8 @@ import robot.Robot;
 public class FindBall extends RobotBehavior {
 
 	private final double TURN_RATE = 75;
-	private final double SPEED_RATE = 0.15;
+	private final double ROTATE_SPEED = 0.4;
+	private final double NEAR_SPEED = 0.5;
 	private final int DELAY_LENGTH = 0; // in milliseconds
 	private final int LOST_BALL_THRESHOLD = 10;
 	
@@ -22,6 +23,9 @@ public class FindBall extends RobotBehavior {
 
 	@Override
 	public boolean takeControl() {
+		LCD.clear(0);
+		LCD.drawString("findBall", 0, 0);
+		
 		if (gotBall) {
 			int distance = getRobot().getUltrasonic().getDistance();
 			int direction = getRobot().getSeeker().getDirection();
@@ -49,7 +53,7 @@ public class FindBall extends RobotBehavior {
 		do {
 			int distance = getRobot().getUltrasonic().getDistance();
 			int direction = getRobot().getSeeker().getDirection();
-
+/*
 			LCD.clear();
 			LCD.drawInt(direction, 0, 0);
 			LCD.drawInt(distance, 0, 1);
@@ -58,7 +62,7 @@ public class FindBall extends RobotBehavior {
 			} else {
 				LCD.drawInt(0, 0, 4);
 			}
-			
+*/			
 			if (direction == 0) {
 				continue;
 			}
@@ -74,11 +78,11 @@ public class FindBall extends RobotBehavior {
 			canCatchIt = false;
 			if (Math.abs(direction) < 3) {
 				if (distance < 25) {
-					pilot.setCurrentSpeed(Math.min(pilot.getCurrentSpeed(), pilot.getMaxSpeed() * 0.5));
+					pilot.setCurrentSpeed(Math.min(pilot.getCurrentSpeed(), pilot.getMaxSpeed() * NEAR_SPEED));
 					canCatchIt = true;
 				}
 			} else {
-				pilot.setCurrentSpeed(Math.min(pilot.getCurrentSpeed(), pilot.getMaxSpeed() * 0.7));
+				pilot.setCurrentSpeed(Math.min(pilot.getCurrentSpeed(), pilot.getMaxSpeed() * ROTATE_SPEED));
 			}
 			
 			pilot.steer(TURN_RATE * (-direction));

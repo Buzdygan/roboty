@@ -2,6 +2,7 @@ package behaviors;
 
 import lejos.nxt.LCD;
 import position.CurrentPositionBox;
+import position.PositionFinder;
 import robot.Robot;
 
 public class UpdatePosition extends RobotPositionBehavior {
@@ -12,28 +13,26 @@ public class UpdatePosition extends RobotPositionBehavior {
 
 	@Override
 	public boolean takeControl() {
-//		int values[] = getRobot().getSeeker().getSensorValues();
-//		int dist = getRobot().getUltrasonic().getDistance();
-//		LCD.clear();
-//		for (int i=0; i<values.length; ++i) {
-//			LCD.drawInt(values[i], 0, i);
-//		}
-//		LCD.drawInt(dist, 0, 5);
-		
 		getRobot().getPositionManager().updatePosition();
+		
+		LCD.clear(5);
+		LCD.drawInt((int)getCurrentPosition().getCoordinates().getNorm(), 0, 5);
+		LCD.drawInt((int)getCurrentPosition().getCoordinates().getIm(), 5, 5);
+		
+		LCD.clear(6);
+		LCD.drawInt((int)getCurrentPosition().getRotation().getAngle(), 0, 6);
+		
+		// TODO
+		
 		return false;
 	}
 
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
-		
+		setCurrentPosition(new PositionFinder(getRobot()).findPosition());
 	}
 
 	@Override
-	public void suppress() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void suppress() {}
 
 }

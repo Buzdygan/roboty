@@ -1,3 +1,4 @@
+import lejos.nxt.Button;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
@@ -30,11 +31,11 @@ public class CompetitionType1 {
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
 		
-		// Button.waitForAnyPress();
+		Button.waitForAnyPress();
 		
 		Delay.msDelay(1000);
 		
-		//arbiter.start();
+		arbiter.start();
 		
 	}
 }

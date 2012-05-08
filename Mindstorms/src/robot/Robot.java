@@ -3,18 +3,16 @@ package robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
-import lejos.nxt.addon.CompassMindSensor;
+import lejos.nxt.addon.CompassHTSensor;
 import lejos.nxt.addon.IRSeekerV2;
 import lejos.nxt.addon.IRSeekerV2.Mode;
-import lejos.util.Delay;
 import position.CurrentPositionBox;
-import position.PositionFinder;
+import position.Position;
 import position.PositionManager;
 
 public class Robot {
@@ -34,7 +32,7 @@ public class Robot {
 	}
 
 	private IRSeekerV2 seeker;
-	private CompassMindSensor compass;
+	private CompassHTSensor compass;
 	private ColorSensor colorlight;
 	private UltrasonicSensor ultrasonic;
 	
@@ -57,7 +55,7 @@ public class Robot {
 	
 	private void initializeSensors() {
 		seeker = new IRSeekerV2(SensorPort.S1, Mode.AC);
-		compass = new CompassMindSensor(SensorPort.S2);
+		compass = new CompassHTSensor(SensorPort.S2);
 		compass.resetCartesianZero();
 		colorlight = new ColorSensor(SensorPort.S4);
 		ultrasonic = new UltrasonicSensor(SensorPort.S3);
@@ -85,11 +83,11 @@ public class Robot {
 		this.seeker = seeker;
 	}
 
-	public CompassMindSensor getCompass() {
+	public CompassHTSensor getCompass() {
 		return compass;
 	}
 
-	public void setCompass(CompassMindSensor compass) {
+	public void setCompass(CompassHTSensor compass) {
 		this.compass = compass;
 	}
 
@@ -176,6 +174,7 @@ public class Robot {
 */
 
 	public void initialize(CurrentPositionBox positionBox) {
+		/*
 		PositionFinder posfinder = new PositionFinder(this);
 		do{
 			posfinder.findPosition();
@@ -184,8 +183,10 @@ public class Robot {
 				Delay.msDelay(200);				
 			}
 		}while(Button.readButtons() != Button.ID_ESCAPE);
+		*/
 		//Position startPosition = posfinder.findPosition();
-		//positionBox.setCurrentPosition(startPosition);
+		Position startPosition = new Position();
+		positionBox.setCurrentPosition(startPosition);
 		positionManager.setPositionBox(positionBox);
 		positionManager.reset();
 	}
