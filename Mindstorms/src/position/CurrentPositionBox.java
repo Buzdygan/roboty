@@ -7,6 +7,7 @@ public class CurrentPositionBox {
 
 	public static final double pitchWidth = 1200, pitchHeight = 1800; // in
 																		// millimeters
+	public static final double boundaryMargin = 50;
 	private Complex opponentsGoalCoord, ourHalfCoord;
 	private final double diameter;
 	private Position currentPosition;
@@ -48,7 +49,7 @@ public class CurrentPositionBox {
 		this.currentPosition = currentPosition;
 	}
 
-	private final double angleTreshold = Math.PI / 16;
+	private final double angleTreshold = Math.PI / 32;
 
 	public boolean inFront(Complex destination) {
 		Complex diff = destination.sub(getCurrentPosition().getCoordinates());
@@ -65,14 +66,14 @@ public class CurrentPositionBox {
 	public int getRotationTo(double arc, Complex destination) {
 		arc /= 100;
 		double radius = diameter * (1 + arc) / (1 - arc) / 2;
-		double left = minDistance(
+		double left = boundaryDistance(
 				getCurrentPosition().getCoordinates().add(
 						new Complex(0, radius).mul(getCurrentPosition()
-								.getRotation())), radius);
-		double right = minDistance(
+								.getRotation()))) - radius;
+		double right = boundaryDistance(
 				getCurrentPosition().getCoordinates().add(
 						new Complex(0, -radius).mul(getCurrentPosition()
-								.getRotation())), radius);
+								.getRotation()))) - radius;
 		Complex relative = destination.sub(
 				getCurrentPosition().getCoordinates()).div(
 				getCurrentPosition().getRotation());
@@ -88,13 +89,13 @@ public class CurrentPositionBox {
 		return (int) Math.round(Math.signum(left - right));*/
 	}
 
-	private double minDistance(Complex center, double radius) {
+	private double boundaryDistance(Complex center) {
 		return Math.min(
-				center.getRe() - radius,
+				center.getRe(),
 				Math.min(
-						pitchHeight - center.getRe() - radius,
-						Math.min(center.getIm() - radius,
-								pitchWidth - center.getIm() - radius)));
+						pitchHeight - center.getRe(),
+						Math.min(center.getIm(),
+								pitchWidth - center.getIm())));
 	}
 
 	public boolean inFrontOfOpponentsGoal() {
@@ -124,5 +125,9 @@ public class CurrentPositionBox {
 			diff = diff.div(getCurrentPosition().getRotation());
 		RConsole.println(diff.toString());
 		RConsole.println(Double.toString(diff.getAngle() * 180 / Math.PI));
+	}
+
+	public boolean isOutside() {
+		return boundaryDistance(getCurrentPosition().getCoordinates()) - boundaryMargin < 0;
 	}
 }

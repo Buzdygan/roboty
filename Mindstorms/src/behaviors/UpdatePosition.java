@@ -21,18 +21,11 @@ public class UpdatePosition extends RobotPositionBehavior {
 		LCD.clear(6);
 		LCD.drawInt((int)(getCurrentPosition().getRotation().getAngle() * 180 / Math.PI), 0, 6);
 		
-		// if(getRobot().getPositionFinder().verifyPosition(getCurrentPosition()) == false)
-		//	return true;
-		
-		// TODO
-		
 		return false;
 	}
 
 	@Override
-	public void action() {
-		setCurrentPosition(getRobot().getPositionFinder().findPosition());
-	}
+	public void action() {}
 
 	@Override
 	public void suppress() {}

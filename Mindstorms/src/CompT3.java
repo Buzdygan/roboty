@@ -1,4 +1,5 @@
 import lejos.nxt.Button;
+import lejos.nxt.addon.RealTimeClock;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
@@ -7,6 +8,7 @@ import robot.Robot;
 import behaviors.Exit;
 import behaviors.FindBall;
 import behaviors.Kick;
+import behaviors.Reset;
 import behaviors.RotateToGoal;
 import behaviors.UpdatePosition;
 
@@ -23,7 +25,8 @@ public class CompT3 {
 		behaviors[1] = new RotateToGoal(robot, positionBox);
 		behaviors[2] = new FindBall(robot, positionBox);
 		behaviors[3] = new UpdatePosition(robot, positionBox);
-		behaviors[4] = new Exit();
+		behaviors[4] = new Reset(robot, positionBox);
+		behaviors[5] = new Exit();
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
 		

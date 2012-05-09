@@ -8,6 +8,7 @@ import robot.Robot;
 import behaviors.Exit;
 import behaviors.FindBall;
 import behaviors.Kick;
+import behaviors.Reset;
 import behaviors.RotateToGoal;
 import behaviors.UpdatePosition;
 
@@ -19,12 +20,13 @@ public class CompT3Test {
 		robot.initialize(positionBox, new Position(new Complex(200, 200), new Complex(1, 0)));
 	//	RConsole.open();
 
-		Behavior behaviors[] = new Behavior[5];
+		Behavior behaviors[] = new Behavior[6];
 		behaviors[0] = new Kick(robot, positionBox);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
 		behaviors[2] = new FindBall(robot, positionBox);
 		behaviors[3] = new UpdatePosition(robot, positionBox);
-		behaviors[4] = new Exit();
+		behaviors[4] = new Reset(robot, positionBox);
+		behaviors[5] = new Exit();
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
 

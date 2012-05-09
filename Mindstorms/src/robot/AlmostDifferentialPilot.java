@@ -28,6 +28,10 @@ public class AlmostDifferentialPilot {
 	public void setCurrentSpeed(double currentSpeed) {
 		this.currentSpeed = currentSpeed;
 	}
+	
+	public void setSpeedRate(double rate) {
+		this.currentSpeed = getMaxSpeed() * rate;
+	}
 
 	public double getMaxSpeed() {
 		return maxSpeed;
@@ -64,11 +68,29 @@ public class AlmostDifferentialPilot {
 		}
 	}
 	
+	private void updateSpeed() {
+		left.setSpeed(Math.round(currentSpeed));
+		right.setSpeed(Math.round(currentSpeed));
+	}
+	
+	public void forward() {
+		updateSpeed();
+		left.forward();
+		right.forward();
+	}
+	
+	public void backward() {
+		updateSpeed();
+		left.backward();
+		right.backward();
+	}
+	
 	public void rotate(double angle) {
 		rotate(angle, false);
 	}
 	
 	public void rotate(double angle, boolean immediateReturn) { // in degrees
+		updateSpeed();
 		left.rotate((int) (-angle * (diameter / 2) / wheelRadius), true);
 		right.rotate((int) (angle * (diameter / 2) / wheelRadius), immediateReturn);
 	    if (!immediateReturn)  while (isMoving()) Thread.yield();
