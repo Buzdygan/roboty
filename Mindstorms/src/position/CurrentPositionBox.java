@@ -1,15 +1,16 @@
 package position;
 
-import lejos.nxt.LCD;
 import lejos.nxt.comm.RConsole;
-import lejos.util.Delay;
 import robot.Robot;
 
 public class CurrentPositionBox {
 
-	public static final double pitchWidth = 1200, pitchHeight = 1800; // in
-																		// millimeters
+	// in millimeters
+	public static final double pitchWidth = 1200, pitchHeight = 1800; 
 	public static final double boundaryMargin = 50;
+	// in radians
+	public static final double rotationTreshold = Math.PI * 2 / 3; 
+	
 	private Complex opponentsGoalCoord, ourHalfCoord;
 	private final double diameter;
 	private Position currentPosition;
@@ -65,30 +66,61 @@ public class CurrentPositionBox {
 		return Math.abs(diff.getAngle()) < 3 * angleTreshold;
 	}
 
-	public int getRotationTo(double arc, Complex destination) {
-		arc /= 100;
-		double radius = diameter * (1 + arc) / (1 - arc) / 2;
-		double left = boundaryDistance(
-				getCurrentPosition().getCoordinates().add(
-						new Complex(0, radius).mul(getCurrentPosition()
-								.getRotation()))) - radius;
-		double right = boundaryDistance(
-				getCurrentPosition().getCoordinates().add(
-						new Complex(0, -radius).mul(getCurrentPosition()
-								.getRotation()))) - radius;
+	// 100 - zakręca z jednym kołem w miejscu, 0 - jedzie na wprost
+	public double getRotationTo(double arc, Complex destination) {
+		
+		double leftArc, rightArc, radius;
+		double A = 1, B = 100 - arc, C, CC;
+		
+		while(B - A > 1) {
+			C = (A+B) / 2;
+			CC = C / 100;
+			radius = diameter * (1 + CC) / (1 - CC) / 2;
+			double dist = boundaryDistance(
+					getCurrentPosition().getCoordinates().add(
+							new Complex(0, radius).mul(getCurrentPosition()
+									.getRotation()))) - radius;
+			if (dist > boundaryMargin) {
+				A = C;
+			} else {
+				B = C;
+			}
+		}
+		leftArc = 100 - A;
+		
+		A = 1; B = 100 - arc;
+		while(B - A > 1) {
+			C = (A+B) / 2;
+			CC = C / 100;
+			radius = diameter * (1 + CC) / (1 - CC) / 2;
+			double dist = boundaryDistance(
+					getCurrentPosition().getCoordinates().add(
+							new Complex(0, -radius).mul(getCurrentPosition()
+									.getRotation()))) - radius;
+			if (dist > boundaryMargin) {
+				A = C;
+			} else {
+				B = C;
+			}
+		}
+		rightArc = 100 - A;
+		
 		Complex relative = destination.sub(
 				getCurrentPosition().getCoordinates()).div(
 				getCurrentPosition().getRotation());
-//		if ((left > 0) && (right > 0)) {
-			return (int) Math.round(Math.signum(relative.getAngle()));
-/*		}
-		if (left > 0) {
-			return 1;
+		
+		if (Math.abs(relative.getAngle()) < rotationTreshold) {
+			if (Math.signum(relative.getAngle()) > 0) {
+				return (int) leftArc;
+			} else {
+				return - (int) rightArc;
+			}
 		}
-		if (right > 0) {
-			return -1;
+		if (leftArc < rightArc) {
+			return (int) leftArc;
+		} else {
+			return - (int) rightArc;
 		}
-		return (int) Math.round(Math.signum(left - right));*/
 	}
 
 	private double boundaryDistance(Complex center) {
@@ -109,11 +141,11 @@ public class CurrentPositionBox {
 		return almostInFront(getOpponentsGoalCoord());
 	}
 
-	public int getRotationToOpponentsGoal(double arc) {
+	public double getRotationToOpponentsGoal(double arc) {
 		return getRotationTo(arc, opponentsGoalCoord);
 	}
 
-	public int getRotationToOurHalf(double arc) {
+	public double getRotationToOurHalf(double arc) {
 		return getRotationTo(arc, ourHalfCoord);
 	}
 

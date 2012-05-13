@@ -1,4 +1,5 @@
 package behaviors;
+import lejos.util.Delay;
 import position.CurrentPositionBox;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
@@ -6,6 +7,8 @@ import robot.Robot;
 
 public class Reset extends RobotPositionBehavior {
 
+	static private int DELAY = 500;
+	
 	public Reset(Robot robot, CurrentPositionBox currentPositionBox) {
 		super(robot, currentPositionBox);
 	}
@@ -21,6 +24,7 @@ public class Reset extends RobotPositionBehavior {
 		pilot.setSpeedRate(0.5);
 		pilot.backward();
 		getRobot().kick();
+		Delay.msDelay(DELAY);
 		pilot.stop();
 		setCurrentPosition(getRobot().getPositionFinder().findPosition());
 	}
