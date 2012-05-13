@@ -37,18 +37,18 @@ public class RotateToGoal extends RobotPositionBehavior {
 		while ((!suppressed) && !getCurrentPositionBox().almostInFrontOfOpponentsGoal()) {
 			getCurrentPositionBox().printOpponentsGoal();
 			pilot.setCurrentSpeed(pilot.getMaxSpeed() * fastSpeed);
-			int result = getCurrentPositionBox().getRotationToOpponentsGoal(steerRate);
-			RConsole.println("Direction: " + Integer.toString(result));
-			pilot.steer(steerRate * result);
+			double result = getCurrentPositionBox().getRotationToOpponentsGoal(steerRate);
+			RConsole.println("Direction: " + Double.toString(result));
+			pilot.steer(result);
 			Thread.yield();
 		}
 		RConsole.println("=== MIDDLE ===");
 		while ((!suppressed) && !getCurrentPositionBox().inFrontOfOpponentsGoal()) {
 			getCurrentPositionBox().printOpponentsGoal();
 			pilot.setCurrentSpeed(pilot.getMaxSpeed() * slowSpeed);
-			int result = getCurrentPositionBox().getRotationToOpponentsGoal(steerRate);
-			RConsole.println("Direction: " + Integer.toString(result));
-			pilot.steer(steerRate * result);
+			double result = getCurrentPositionBox().getRotationToOpponentsGoal(steerRate);
+			RConsole.println("Direction: " + Double.toString(result));
+			pilot.steer(result);
 		}
 		RConsole.println("=== OUT ===");
 		pilot.steer(0);
