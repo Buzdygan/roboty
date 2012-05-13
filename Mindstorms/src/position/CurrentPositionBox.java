@@ -6,8 +6,10 @@ import robot.Robot;
 public class CurrentPositionBox {
 
 	// in millimeters
-	public static final double pitchWidth = 1200, pitchHeight = 1800; 
+	public static final double pitchWidth = 1200, pitchHeight = 1800;
+	public static final double outerBoundaryMargin = -30;
 	public static final double boundaryMargin = 50;
+	
 	// in radians
 	public static final double rotationTreshold = Math.PI * 2 / 3; 
 	
@@ -27,7 +29,7 @@ public class CurrentPositionBox {
 
 	public CurrentPositionBox(double diameter) {
 		super();
-		this.opponentsGoalCoord = new Complex(pitchHeight, pitchWidth / 2);
+		this.opponentsGoalCoord = new Complex(pitchHeight * 1.3, pitchWidth / 2);
 		this.ourHalfCoord = new Complex(pitchHeight / 3, pitchWidth / 2);
 		this.diameter = diameter;
 	}
@@ -105,6 +107,9 @@ public class CurrentPositionBox {
 		}
 		rightArc = 100 - A;
 		
+		RConsole.println(Double.toString(leftArc));
+		RConsole.println(Double.toString(rightArc));
+		
 		Complex relative = destination.sub(
 				getCurrentPosition().getCoordinates()).div(
 				getCurrentPosition().getRotation());
@@ -149,20 +154,7 @@ public class CurrentPositionBox {
 		return getRotationTo(arc, ourHalfCoord);
 	}
 
-	public void printOpponentsGoal() {
-		 RConsole.println("Ja:");
-		 RConsole.println(currentPosition.getCoordinates().toString());
-		 RConsole.println(Double.toString(currentPosition.getRotation().getAngle() * 180 / Math.PI));
-		 RConsole.println("Bramka:");
-		 RConsole.println(opponentsGoalCoord.toString());
-		 RConsole.println("Relatywnie:");
-		 Complex diff = opponentsGoalCoord.sub(getCurrentPosition().getCoordinates());
-			diff = diff.div(getCurrentPosition().getRotation());
-		RConsole.println(diff.toString());
-		RConsole.println(Double.toString(diff.getAngle() * 180 / Math.PI));
-	}
-
 	public boolean isOutside() {
-		return boundaryDistance(getCurrentPosition().getCoordinates()) - boundaryMargin < 0;
+		return boundaryDistance(getCurrentPosition().getCoordinates()) - outerBoundaryMargin < 0;
 	}
 }
