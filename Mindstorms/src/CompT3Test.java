@@ -1,3 +1,5 @@
+import lejos.nxt.Button;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
@@ -16,10 +18,11 @@ public class CompT3Test {
 	public static void main(String[] args) {
 		Robot robot = new Robot();
 		CurrentPositionBox positionBox = new CurrentPositionBox();
-
-		robot.initialize(positionBox, new Position(new Complex(200, 200), new Complex(1, 0)));
-	//	RConsole.open();
-
+		
+		RConsole.open();
+		
+		robot.initialize(positionBox, robot.getPositionFinder().findPosition());
+		
 		Behavior behaviors[] = new Behavior[6];
 		behaviors[0] = new Kick(robot, positionBox);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
@@ -29,10 +32,10 @@ public class CompT3Test {
 		behaviors[5] = new Exit();
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
-
-		Delay.msDelay(500);
-
+		
+		
 		arbiter.start();
 
+		RConsole.close();
 	}
 }

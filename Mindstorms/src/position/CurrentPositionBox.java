@@ -1,6 +1,8 @@
 package position;
 
+import lejos.nxt.LCD;
 import lejos.nxt.comm.RConsole;
+import lejos.util.Delay;
 import robot.Robot;
 
 public class CurrentPositionBox {
@@ -90,12 +92,13 @@ public class CurrentPositionBox {
 	}
 
 	private double boundaryDistance(Complex center) {
-		return Math.min(
+		double res = Math.min(
 				center.getRe(),
 				Math.min(
 						pitchHeight - center.getRe(),
 						Math.min(center.getIm(),
 								pitchWidth - center.getIm())));
+		return res;
 	}
 
 	public boolean inFrontOfOpponentsGoal() {

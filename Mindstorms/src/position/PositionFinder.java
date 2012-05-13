@@ -22,8 +22,8 @@ public class PositionFinder {
 	private final int TURNS = 12;
 	private final int MEASUREMENTS = 7;
 	private final int TURN_ANGLE = 360 / TURNS;
-	private final int MEASUREMENT_DELAY = 50;
-	private final int TURN_DELAY = 200;
+	private final int MEASUREMENT_DELAY = 5;
+	private final int TURN_DELAY = 10;
 	private final int WIDTH = 120;
 	private final int HEIGHT = 180;
 	private final int WRONG_DIST = 255;
@@ -101,8 +101,6 @@ public class PositionFinder {
 	}
 	
 	public Position findPosition(){
-		
-		Position startPosition = new Position();
 		AlmostDifferentialPilot pilot = robot.getDifferentialPilot();
 		List<Integer> xPositions = new ArrayList<Integer>();
 		List<Integer> yPositions = new ArrayList<Integer>();
@@ -150,10 +148,8 @@ public class PositionFinder {
 		LCD.clear();
 		LCD.drawInt(xPosition, 0, 0);
 		LCD.drawInt(yPosition, 0, 1);
-		Complex coordinates = new Complex(yPosition, WIDTH - xPosition);
-		startPosition.setCoordinates(coordinates);
-		startPosition.getCoordinates().mul(new Complex(10,0)); // translate centimeters to millimeters
-		return startPosition;
+		Complex coordinates = new Complex(10.0 * yPosition, 10.0 * (WIDTH - xPosition));
+		return new Position(coordinates, new Complex(1,0));
 	}
 	
 	private boolean checkMeasurements(double expectedDist, double dist)

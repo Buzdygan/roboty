@@ -20,7 +20,7 @@ public class CompT3 {
 		
 		robot.initialize(positionBox, robot.getPositionFinder().findPosition());
 		
-		Behavior behaviors[] = new Behavior[5];
+		Behavior behaviors[] = new Behavior[6];
 		behaviors[0] = new Kick(robot, positionBox);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
 		behaviors[2] = new FindBall(robot, positionBox);
@@ -33,7 +33,5 @@ public class CompT3 {
 		Button.waitForAnyPress();
 		
 		arbiter.start();
-		
-		RConsole.close();
 	}
 }
