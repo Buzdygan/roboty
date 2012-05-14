@@ -23,15 +23,16 @@ public class CompT3Test {
 		RConsole.open();
 		
 		robot.initialize(positionBox, robot.getPositionFinder().findPosition());
+		ReturnHome retHome = new ReturnHome(robot, positionBox);
+		retHome.action();
 		
-		Behavior behaviors[] = new Behavior[7];
+		Behavior behaviors[] = new Behavior[6];
 		behaviors[0] = new Kick(robot, positionBox);
 		behaviors[1] = new RotateToGoal(robot, positionBox);
 		behaviors[2] = new FindBall(robot, positionBox);
-		behaviors[3] = new ReturnHome(robot, positionBox);
-		behaviors[4] = new UpdatePosition(robot, positionBox);
-		behaviors[5] = new Reset(robot, positionBox);
-		behaviors[6] = new Exit();
+		behaviors[3] = new UpdatePosition(robot, positionBox);
+		behaviors[4] = new Reset(robot, positionBox);
+		behaviors[5] = new Exit();
 
 		Arbitrator arbiter = new Arbitrator(behaviors);
 		

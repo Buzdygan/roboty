@@ -5,6 +5,7 @@ import java.util.List;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
@@ -148,8 +149,9 @@ public class PositionFinder {
 		LCD.clear();
 		LCD.drawInt(xPosition, 0, 0);
 		LCD.drawInt(yPosition, 0, 1);
+		RConsole.println("Position:  " + Integer.toString(xPosition) + "  " + Integer.toString(yPosition));
 		Complex coordinates = new Complex(10.0 * yPosition, 10.0 * (WIDTH - xPosition));
-		return new Position(coordinates, new Complex(1,0));
+		return new Position(coordinates, Complex.fromPolar(1, (robot.getCompass().getDegreesCartesian() / 180.0) * Math.PI));
 	}
 	
 	private boolean checkMeasurements(double expectedDist, double dist)

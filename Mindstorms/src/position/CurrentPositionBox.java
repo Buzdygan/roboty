@@ -107,8 +107,8 @@ public class CurrentPositionBox {
 		}
 		rightArc = 100 - A;
 		
-		RConsole.println(Double.toString(leftArc));
-		RConsole.println(Double.toString(rightArc));
+		//RConsole.println(Double.toString(leftArc));
+		//RConsole.println(Double.toString(rightArc));
 		
 		Complex relative = destination.sub(
 				getCurrentPosition().getCoordinates()).div(
