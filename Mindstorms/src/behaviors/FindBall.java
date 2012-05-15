@@ -1,22 +1,26 @@
 package behaviors;
 
-import position.CurrentPositionBox;
+import java.io.File;
+
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
-import lejos.util.Delay;
+import position.CurrentPositionBox;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
 
 public class FindBall extends RobotPositionBehavior {
 
+	File toyHornFile;
+	
 	public FindBall(Robot robot, CurrentPositionBox currentPositionBox) {
 		super(robot, currentPositionBox);
+		toyHornFile = new File("toyHorn8.wav");
 	}
 
 	private final double TURN_RATE = 75;
 	private final double ROTATE_SPEED = 0.4;
 	private final double NEAR_SPEED = 0.5;
-	private final int DELAY_LENGTH = 0; // in milliseconds
 	private final int LOST_BALL_THRESHOLD = 10;
 	
 	private boolean suppressed = false;
@@ -49,6 +53,8 @@ public class FindBall extends RobotPositionBehavior {
 		LCD.drawString("FIND BALL", 0, 0);
 		RConsole.println("=== FIND BALL ===");
 		
+		Sound.playSample(toyHornFile, 100);
+		
 		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
 		suppressed = false;
 		
@@ -56,21 +62,10 @@ public class FindBall extends RobotPositionBehavior {
 		
 		do {
 			int distance = getRobot().getUltrasonic().getDistance();
-			int direction = getRobot().getSeeker().getDirection();
-/*
-			LCD.clear();
-			LCD.drawInt(direction, 0, 0);
-			LCD.drawInt(distance, 0, 1);
-			if (canCatchIt) {
-				LCD.drawInt(1, 0, 4);
-			} else {
-				LCD.drawInt(0, 0, 4);
-			}
-*/			
+			int direction = getRobot().getSeeker().getDirection();		
 			if (direction == 0) {
 				continue;
 			}
-			
 			if (canCatchIt && getRobot().canHaveBall(distance, direction)) {
 				currentPositionBox.setGotBall(true);
 				continue;
@@ -92,10 +87,7 @@ public class FindBall extends RobotPositionBehavior {
 			pilot.steer(TURN_RATE * (-direction));
 			
 		} while ((!suppressed) && (!currentPositionBox.gotBall()));
-
-		if (!suppressed) {
-			Delay.msDelay(DELAY_LENGTH);
-		}
+		
 	}
 
 	@Override
