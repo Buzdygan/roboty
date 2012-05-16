@@ -1,4 +1,3 @@
-import lejos.nxt.Button;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import position.CurrentPositionBox;
@@ -18,8 +17,7 @@ public class CompT3 {
 		CurrentPositionBox positionBox = new CurrentPositionBox();
 		
 		robot.initialize(positionBox, robot.getPositionFinder().findPosition());
-		ReturnHome retHome = new ReturnHome(robot, positionBox);
-		retHome.action();
+		new ReturnHome(robot, positionBox).action();
 		
 		Behavior behaviors[] = new Behavior[6];
 		behaviors[0] = new Kick(robot, positionBox);

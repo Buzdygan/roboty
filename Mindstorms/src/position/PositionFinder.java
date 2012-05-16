@@ -1,10 +1,12 @@
 package position;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
 import robot.AlmostDifferentialPilot;
@@ -31,12 +33,15 @@ public class PositionFinder {
 	private final int BAD_POSITION_ALARM_NUMBER = 4;
 	private final int ACCEPTABLE_DIST_ERROR = 50;
 	
+	private File feelGoodFile;
+	
 	private int badPositionCounter;
 	
 	public PositionFinder(Robot rob)
 	{
 		robot = rob;
 		badPositionCounter = 0;
+		feelGoodFile = new File("feelgood.wav");
 	}
 	
 	private int getMostProbable(List<Integer> elist){
@@ -144,6 +149,9 @@ public class PositionFinder {
 			}
 			
 		}
+
+		Sound.playSample(feelGoodFile, 100);
+		
 		int xPosition = getMostProbable(xPositions);
 		int yPosition = getMostProbable(yPositions);
 		LCD.clear();

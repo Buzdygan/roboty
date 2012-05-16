@@ -1,6 +1,5 @@
 package position;
 
-import lejos.nxt.comm.RConsole;
 import robot.Robot;
 
 public class CurrentPositionBox {
@@ -29,7 +28,7 @@ public class CurrentPositionBox {
 
 	public CurrentPositionBox(double diameter) {
 		super();
-		this.opponentsGoalCoord = new Complex(pitchHeight * 1.3, pitchWidth / 2);
+		this.opponentsGoalCoord = new Complex(pitchHeight * 1.2, pitchWidth / 2);
 		this.ourHalfCoord = new Complex(pitchHeight / 3, pitchWidth / 2);
 		this.diameter = diameter;
 	}

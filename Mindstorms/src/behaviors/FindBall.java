@@ -1,21 +1,15 @@
 package behaviors;
 
-import java.io.File;
-
 import lejos.nxt.LCD;
-import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import position.CurrentPositionBox;
 import robot.AlmostDifferentialPilot;
 import robot.Robot;
 
 public class FindBall extends RobotPositionBehavior {
-
-	File toyHornFile;
 	
 	public FindBall(Robot robot, CurrentPositionBox currentPositionBox) {
 		super(robot, currentPositionBox);
-		toyHornFile = new File("toyHorn8.wav");
 	}
 
 	private final double TURN_RATE = 75;
@@ -52,8 +46,6 @@ public class FindBall extends RobotPositionBehavior {
 		LCD.clear(0);
 		LCD.drawString("FIND BALL", 0, 0);
 		RConsole.println("=== FIND BALL ===");
-		
-		Sound.playSample(toyHornFile, 100);
 		
 		AlmostDifferentialPilot pilot = getRobot().getDifferentialPilot();
 		suppressed = false;
